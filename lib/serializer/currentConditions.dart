@@ -1,6 +1,5 @@
 class CurrentCondition {
-  final String date, hour, windSpeed, windGust, windDir, pressure, humidity, condition, conditionKey, icon, iconBig;
-  final int tmp;
+  var date, hour, windSpeed, windGust, windDir, pressure, humidity, condition, conditionKey, icon, iconBig, tmp;
 
 
   CurrentCondition.fromJson(Map<String, dynamic> json):

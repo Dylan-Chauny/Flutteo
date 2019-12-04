@@ -1,13 +1,16 @@
 import 'package:flutteo/serializer/currentConditions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'serializer/cityInfo.dart';
 
 Map jsonData;
+
+var cond;
+var ci;
 
 void main() => runApp(MyApp());
 
@@ -64,8 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
     var data = await _loadJsonAsset();
     print("Fin requête");
     final jsonData = json.decode(data.body);
-    var ci = CityInfo.fromJson(jsonData['city_info']);
-    //var cond = CurrentCondition.fromJson(jsonData['current_condition']);
+    try {
+      cond = CurrentCondition.fromJson(jsonData['current_condition']);
+      ci = CityInfo.fromJson(jsonData['city_info']);
+
+      print("Valeur récupérées");
+    }
+    catch (e)
+    {
+      print(e);
+    }
 
     return ci;
   }
@@ -96,18 +107,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               );
             } else {
-              return ListView(
-                children: <Widget>[
-                  Text("- " + snapshot.data.name.toString() + " (ville)"),
-                  Text("- " + snapshot.data.country.toString() + " (pays)"),
-                  Text("- " + snapshot.data.latitude.toString() + " (latitude)"),
-                  Text("- " + snapshot.data.longitude.toString() + " (longitude)"),
-                  Text("- " + snapshot.data.elevation.toString() + " (elevation)"),
-                  Text("- " + snapshot.data.sunrise.toString() + " (sunrise)"),
-                  Text("- "+ snapshot.data.sunset.toString() + " (sunset)"),
-                  Text(" -------------- "),
-                  Text("Data conditions"),
-                ],
+              return Container (
+                child: ListView(
+                  children: <Widget>[
+                    Text("Data city info"),
+                    Text("- " + ci.name.toString() + " (ville)"),
+                    Text("- " + ci.country.toString() + " (pays)"),
+                    Text("- " + ci.latitude.toString() + " (latitude)"),
+                    Text("- " + ci.longitude.toString() + " (longitude)"),
+                    Text("- " + ci.elevation.toString() + " (elevation)"),
+                    Text("- " + ci.sunrise.toString() + " (sunrise)"),
+                    Text("- "+ ci.sunset.toString() + " (sunset)"),
+                    Text(" -------------- "),
+                    Text("Data conditions"),
+                    Text("- "+ cond.date.toString() + " (date)"),
+                    Text("- "+ cond.hour.toString() + " (hour)"),
+                    Text("- "+ cond.tmp.toString() + " (température)"),
+                    Text("- "+ cond.windSpeed.toString() + " (wnd_spd)"),
+                    Text("- "+ cond.windGust.toString() + " (wnd_gust)"),
+                    Text("- "+ cond.windDir.toString() + " (wnd_dir)"),
+                    Text("- "+ cond.pressure.toString() + " (pressure)"),
+                    Text("- "+ cond.humidity.toString() + " (humidity)"),
+                    Text("- "+ cond.condition.toString() + " (condition)"),
+                    Text("- "+ cond.conditionKey.toString() + " (condition key)"),
+                    Text("- "+ cond.icon.toString() + " (icon)"),
+                    Text("- "+ cond.iconBig.toString() + " (icon Big)"),
+                    Text(" -------------- "),
+                  ],
+                ),
               );
             }
           },
