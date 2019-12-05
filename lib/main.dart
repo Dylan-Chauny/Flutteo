@@ -1,16 +1,26 @@
 import 'package:flutteo/serializer/currentConditions.dart';
+import 'package:flutteo/serializer/fcst_day.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'Views/allViews.dart';
+import 'layout.dart';
 
 import 'serializer/cityInfo.dart';
 
 Map jsonData;
 
+var count = 0;
 var cond;
 var ci;
+var fcst0;
+var fcst1;
+var fcst2;
+
+bool getData = false;
+String iconsTest = "https://www.prevision-meteo.ch/style/images/icon/ensoleille.png";
 
 void main() => runApp(MyApp());
 
@@ -32,6 +42,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.indigo,
+        appBarTheme: AppBarTheme(brightness: Brightness.dark)
       ),
       home: MyHomePage(title: 'Flutteo'),
     );
@@ -56,33 +67,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedPage = 0;
+  final _pageOptions = [
+    Jour1(),
+    Jour2(),
+    Jour3(),
+  ];
 
   Future<http.Response> _loadJsonAsset() async {
     print("Debut requête");
     return await(http.get("https://www.prevision-meteo.ch/services/json/limoges"));
   }
 
-
   Future loadJson() async {
-    var data = await _loadJsonAsset();
-    print("Fin requête");
-    final jsonData = json.decode(data.body);
+    count++;
     try {
+      var data = await _loadJsonAsset();
+      print("Fin requête");
+      final jsonData = json.decode(data.body);
+
       cond = CurrentCondition.fromJson(jsonData['current_condition']);
       ci = CityInfo.fromJson(jsonData['city_info']);
+      fcst0 = fcstDay.fromJson(jsonData['fcst_day_0']);
+      fcst1 = fcstDay.fromJson(jsonData['fcst_day_1']);
+      fcst2 = fcstDay.fromJson(jsonData['fcst_day_2']);
+
+      //Liste complète des heures : fcst.hourlyData.toString();
 
       print("Valeur récupérées");
+      print("Appel: $count");
+      getData = true;
     }
     catch (e)
     {
       print(e);
     }
-
-    return ci;
   }
 
   @override
   Widget build(BuildContext context) {
+    loadJson();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -90,55 +114,29 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Container(
-        margin: EdgeInsets.only(left: 10.0),
-        child: FutureBuilder(
-          future: loadJson(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text("Loading..."), //Splash Screen à mettre
-                ),
-              );
-            } else {
-              return Container (
-                child: ListView(
-                  children: <Widget>[
-                    Text("Data city info"),
-                    Text("- " + ci.name.toString() + " (ville)"),
-                    Text("- " + ci.country.toString() + " (pays)"),
-                    Text("- " + ci.latitude.toString() + " (latitude)"),
-                    Text("- " + ci.longitude.toString() + " (longitude)"),
-                    Text("- " + ci.elevation.toString() + " (elevation)"),
-                    Text("- " + ci.sunrise.toString() + " (sunrise)"),
-                    Text("- "+ ci.sunset.toString() + " (sunset)"),
-                    Text(" -------------- "),
-                    Text("Data conditions"),
-                    Text("- "+ cond.date.toString() + " (date)"),
-                    Text("- "+ cond.hour.toString() + " (hour)"),
-                    Text("- "+ cond.tmp.toString() + " (température)"),
-                    Text("- "+ cond.windSpeed.toString() + " (wnd_spd)"),
-                    Text("- "+ cond.windGust.toString() + " (wnd_gust)"),
-                    Text("- "+ cond.windDir.toString() + " (wnd_dir)"),
-                    Text("- "+ cond.pressure.toString() + " (pressure)"),
-                    Text("- "+ cond.humidity.toString() + " (humidity)"),
-                    Text("- "+ cond.condition.toString() + " (condition)"),
-                    Text("- "+ cond.conditionKey.toString() + " (condition key)"),
-                    Text("- "+ cond.icon.toString() + " (icon)"),
-                    Text("- "+ cond.iconBig.toString() + " (icon Big)"),
-                    Text(" -------------- "),
-                  ],
-                ),
-              );
-            }
+      appBar: AppBar(title: Text(widget.title)),
+        body : _pageOptions[_selectedPage],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedPage,
+          onTap: (int index) {
+            setState(() {
+              _selectedPage = index;
+            });
           },
-        ),
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.wb_cloudy),
+                title: Text("Jour 1")
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.wb_sunny),
+                title: Text("Jour 2")
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.brightness_2),
+                title: Text("Jour 3"),
+            ),
+          ],
         ),
       );
   }
