@@ -22,7 +22,7 @@ class Jour1 extends StatelessWidget{
                           children: <Widget>[
                             Text(fcst0.dayShort.toString()),
                             Text(fcst0.dayLong.toString()),
-                            Text(cond.date.toString() + " | " + cond.hour.toString()),
+                            Text(fcst0.date.toString() + " | " + cond.hour.toString()),
                             Text("Temp min: " + fcst0.tmin.toString()+"°"),
                             Text("Temp max: " + fcst0.tmax.toString()+"°"),
                             Text("Vent mesuré à "+ cond.windSpeed.toString() + " km/h"),

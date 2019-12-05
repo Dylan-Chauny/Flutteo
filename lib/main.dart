@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.indigo,
+        //textTheme: Typography(platform: TargetPlatform.android).white,
         appBarTheme: AppBarTheme(brightness: Brightness.dark)
       ),
       home: MyHomePage(title: 'Flutteo'),
@@ -92,9 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
       fcst1 = fcstDay.fromJson(jsonData['fcst_day_1']);
       fcst2 = fcstDay.fromJson(jsonData['fcst_day_2']);
 
-      //Liste complète des heures : fcst.hourlyData.toString();
-
       print("Valeur récupérées");
+      //print(fcst0.hourlyData.ICON.toString());
       print("Appel: $count");
       getData = true;
     }
@@ -114,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      //backgroundColor: Colors.blueAccent,
       appBar: AppBar(title: Text(widget.title)),
         body : _pageOptions[_selectedPage],
         bottomNavigationBar: BottomNavigationBar(
@@ -126,15 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.wb_cloudy),
-                title: Text("Jour 1")
+                title: Text("Jour 1", style: TextStyle(color: Colors.indigo),)
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.wb_sunny),
-                title: Text("Jour 2")
+                title: Text("Jour 2", style: TextStyle(color: Colors.indigo))
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.brightness_2),
-                title: Text("Jour 3"),
+                title: Text("Jour 3", style: TextStyle(color: Colors.indigo)),
             ),
           ],
         ),
