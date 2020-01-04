@@ -433,8 +433,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text("Humidité"),
                                       Container(height: 5, child: Text(' ')),
                                       Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black,),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+                                      Container(height: 10, child: Text(' ')),
+                                      Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
                                   ),
                                   Container(
@@ -449,8 +449,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       //UPDATE Vérifier si ISSNOW dans fcst0 renvoie 1 alors mettre icone de neige (☃)
                                       Container(height: 5, child: Text(' ')),
                                       Text("💧", style: TextStyle(fontSize: 30)),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("0.3mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+                                      //Icon(Icons.ac_unit, size: 30, color: Colors.white,),
+                                      Container(height: 10, child: Text(' ')),
+                                      Text("0.3mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                       //UPDATE heure courante + APCPsfc
                                     ],
                                   ),
@@ -464,8 +465,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text("Elevation"),
                                       Container(height: 5, child: Text(' ')),
                                       Text("⛰️", style: TextStyle(fontSize: 30)),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text(ci.elevation.toString()+"m", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+                                      Container(height: 10, child: Text(' ')),
+                                      Text(ci.elevation.toString()+"m", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
                                   ),
                                   Container(
@@ -478,8 +479,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text("Orage"),
                                       Container(height: 5, child: Text(' ')),
                                       Text('🌩', style: TextStyle(fontSize: 30)),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("100%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+                                      Container(height: 10, child: Text(' ')),
+                                      Text("100%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                       //UPDATE heure courante + KINDEX
                                     ],
                                   )
@@ -510,14 +511,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Text("🌬", style: TextStyle(fontSize: 80)),
+                                  Text("🌬", style: TextStyle(fontSize: 100 )),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.compass, size: 17, color: Colors.blue),
+                                          Icon(FontAwesomeIcons.compass, size: 17, color: Colors.lightBlueAccent),
                                           Text("  " + cond.windDir.toString()),
                                         ],
                                       ),
@@ -527,7 +528,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.red),
-                                          Text(" 209°"), // UPDATE windDir10m
+                                          Text("  209°"), // UPDATE windDir10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -535,7 +536,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 10, child: Text(' ')),
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.tachometerAlt, size: 15, color: Colors.yellowAccent),
+                                          Text("🚩", style: TextStyle(fontSize: 15)),
                                           Text("  "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
                                         ],
                                       ),
@@ -555,7 +556,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text('Pression'),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(Icons.alarm_add, color: Colors.lightBlueAccent,),
+                                      Icon(FontAwesomeIcons.tachometerAlt, color: Colors.lightGreen,),
                                       Container(height: 5, child: Text(' ')),
                                       Text('1000 mbar', style: TextStyle(fontWeight: FontWeight.bold))
                                       //UPDATE heure courante + PRMSL
