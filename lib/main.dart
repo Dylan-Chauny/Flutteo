@@ -177,14 +177,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: <Widget>[
                 icon,
-                Text(" ${temperature}°", style: TextStyle(fontWeight: FontWeight.w300,
-                    color: temperature < 10 ? Colors.white :
-                    temperature < 15 ? Colors.white :
-                    temperature < 25 ? Colors.white :
-                    Colors.white))
+                Text(" ${temperature}°", style: TextStyle(fontWeight: FontWeight.w300))
               ],
             )
-
           ],
         ),
       ));
@@ -241,8 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text(fcst0.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent),),
                             Row(
                               children: <Widget>[
-                                Text(' On a la sensation de : ', style: TextStyle(fontSize: 15)),
-                                Text('2°', style: TextStyle(fontSize: 15, color: Colors.yellow)),
+                                Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w200)),
+                                Text('2°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w200)),
 
                               ],
                             )
@@ -254,7 +249,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                Container(height: 20, child: Text('')),
+                Container(height: 20, child: Text(''), //new Color.fromRGBO(255, 0, 0, 0.0),
+                ),
                 Container(
                     margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                     height: 130,
@@ -267,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             bottomRight: Radius.circular(5.0))
                     ),
                     padding: EdgeInsets.all(5),
-                    child: ListView(
+                    child:  ListView(
                       // This next line does the trick.
                       scrollDirection: Axis.horizontal,
                       children: containers(),
@@ -295,7 +291,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: <Widget>[
                             // fcst0 condition
                             Text(cond.condition.toString() + " de " + fcst0.dayLong.toString() +" jusqu'à " + fcst1.dayLong.toString() +" matin", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w200), textAlign: TextAlign.center),
-                            Container(height: 10, child: Text('')),
+                            Container(height: 5, child: Text('')),
+                            Container(
+                              height: 1,
+                              width: 400,
+                              color: Colors.white30,
+                            ),
+                            Container(height: 5, child: Text('')),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
@@ -314,8 +316,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst0.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios))
+                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null)
                               ],
+                            ),
+                            Container(
+                              height: 0.25,
+                              width: 400,
+                              color: Colors.white30,
+                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -335,8 +343,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst1.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios))
+                                IconButton(icon: Icon(Icons.arrow_forward_ios),  onPressed: null)
                               ],
+                            ),
+                            Container(
+                              height: 0.25,
+                              width: 400,
+                              color: Colors.white30,
+                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -355,8 +369,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text('| '),
                                     Text(fcst2.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
-                                ),                                IconButton(icon: Icon(Icons.arrow_forward_ios))
+                                ),
+                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
                               ],
+                            ),
+                            Container(
+                              height: 0.25,
+                              width: 400,
+                              color: Colors.white30,
+                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -375,7 +396,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text('| '),
                                     Text(fcst3.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
-                                ),                                IconButton(icon: Icon(Icons.arrow_forward_ios))
+                                ),
+                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null)
                               ],
                             )
                           ],
@@ -406,10 +428,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text("Humidité"),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.umbrella, size: 40, color: Colors.lightBlue,),
+                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.lightBlueAccent,),
                                       Container(height: 5, child: Text(' ')),
                                       Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
                                     ],
+                                  ),
+                                  Container(
+                                    height: 100.0,
+                                    width: 0.5,
+                                    color: Colors.white30,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -422,6 +449,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       //heure courante + APCPsfc
                                     ],
                                   ),
+                                  Container(
+                                    height: 100.0,
+                                    width: 0.5,
+                                    color: Colors.white30,
+                                  ),
                                   Column(
                                     children: <Widget>[
                                       Text("Elevation"),
@@ -430,6 +462,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 5, child: Text(' ')),
                                       Text(ci.elevation.toString()+"m", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
                                     ],
+                                  ),
+                                  Container(
+                                    height: 100.0,
+                                    width: 0.5,
+                                    color: Colors.white30,
                                   ),
                                   Column(
                                     children: <Widget>[
