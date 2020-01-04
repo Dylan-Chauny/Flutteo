@@ -19,6 +19,8 @@ var fcst1;
 var fcst2;
 var fcst3;
 var currentTime;
+var sunrise;
+var sunset;
 
 
 void main() => runApp(MyApp());
@@ -81,6 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
       Timer(Duration(seconds: 2 ), () {
         setState(() {
           loading = true;
+          //currentTime 17:52
+          //sunset = ci.sunset.toString(); //18:43
         });
       });
     }
@@ -93,14 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
 
-    var current = new DateTime.now().add(new Duration(hours: 1));
+    var current = new DateTime.now();
+
     var min = current.minute.toString();
     var hour = current.hour.toString();
 
     if(int.parse(min) < 10)
-      {
+    {
         min = "0"+ min;
-      }
+    }
     currentTime = hour + ":" + min;
 
     loadJson();
@@ -131,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var indice = 0;
 
     for (int i = 0; i < 24; i++) {
-      //A remplacer avec heure du tableau
+      // UPDATE A remplacer avec heure du tableau
 
       if(i == 0)
       {
@@ -242,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ],
                             )
                           ],)
-                          //sensation : WindChill dans l'heure current
+                          //UPDATE sensation : WindChill dans l'heure current
                         ],
                       ),
                       Image.network(cond.iconBig.toString())
@@ -289,7 +294,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         child: Column(
                           children: <Widget>[
-                            // fcst0 condition
                             Text(cond.condition.toString() + " de " + fcst0.dayLong.toString() +" jusqu'à " + fcst1.dayLong.toString() +" matin", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w200), textAlign: TextAlign.center),
                             Container(height: 5, child: Text('')),
                             Container(
@@ -428,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text("Humidité"),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.lightBlueAccent,),
+                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black,),
                                       Container(height: 5, child: Text(' ')),
                                       Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
                                     ],
@@ -442,11 +446,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text("Précipitation"),
+                                      //UPDATE Vérifier si ISSNOW dans fcst0 renvoie 1 alors mettre icone de neige (☃)
                                       Container(height: 5, child: Text(' ')),
                                       Text("💧", style: TextStyle(fontSize: 30)),
                                       Container(height: 5, child: Text(' ')),
                                       Text("0.3mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                                      //heure courante + APCPsfc
+                                      //UPDATE heure courante + APCPsfc
                                     ],
                                   ),
                                   Container(
@@ -475,7 +480,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text('🌩', style: TextStyle(fontSize: 30)),
                                       Container(height: 5, child: Text(' ')),
                                       Text("100%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                                      //heure courante + KINDEX
+                                      //UPDATE heure courante + KINDEX
                                     ],
                                   )
                                 ],
@@ -505,7 +510,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Icon(FontAwesomeIcons.wind, size: 100, color: Colors.lightGreen),
+                                  Text("🌬", style: TextStyle(fontSize: 80)),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -513,7 +518,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.compass, size: 17, color: Colors.blue),
-                                          Text(" " + cond.windDir.toString()),
+                                          Text("  " + cond.windDir.toString()),
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -522,7 +527,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.red),
-                                          Text(" 209°"), //windDir10m
+                                          Text(" 209°"), // UPDATE windDir10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -530,8 +535,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 10, child: Text(' ')),
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.tachometerAlt, size: 15, color: Colors.yellow),
-                                          Text(" "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          Icon(FontAwesomeIcons.tachometerAlt, size: 15, color: Colors.yellowAccent),
+                                          Text("  "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -540,7 +545,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
-                                          Text(' 30%', style: TextStyle(fontWeight: FontWeight.bold))                                        ],
+                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))                                        ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
                                       Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10))
@@ -550,10 +555,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text('Pression'),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(Icons.alarm_add, color: Colors.lightGreen,),
+                                      Icon(Icons.alarm_add, color: Colors.lightBlueAccent,),
                                       Container(height: 5, child: Text(' ')),
                                       Text('1000 mbar', style: TextStyle(fontWeight: FontWeight.bold))
-                                      //heure courante + PRMSL
+                                      //UPDATE heure courante + PRMSL
                                     ],
                                   )
                                 ],
@@ -571,7 +576,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text('☀ SOLEIL', style: TextStyle(fontWeight: FontWeight.w500)),
                             Container(
                               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              padding: EdgeInsets.all(35),
+                              padding: EdgeInsets.all(10),
                               decoration: new BoxDecoration(
                                   color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
                                   borderRadius: BorderRadius.only(
@@ -581,42 +586,62 @@ class _MyHomePageState extends State<MyHomePage> {
                                       bottomRight: Radius.circular(5.0))
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Text("🌅 "+ ci.sunrise.toString(), style: TextStyle(fontWeight: FontWeight.bold)), //windDir10m
+                                        ],
+                                      ),
+                                      Container(height: 5, child: Text(' ')),
+                                      Text("(Heure du levé)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
+                                      Container(height: 10, child: Text(' ')),
+                                      Row(
+                                        children: <Widget>[
+                                          Text("🌇 "+ ci.sunset.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                                        ],
+                                      ),
+                                      Container(height: 5, child: Text(' ')),
+                                      Text("(Heure du couché)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
+                                      Container(height: 10, child: Text(' ')),
+                                      Row(
+                                        children: <Widget>[
+                                          Text("⌛ 3:20", style: TextStyle(fontWeight: FontWeight.bold)),
+                                        ],
+                                      ),
+                                      Container(height: 5, child: Text(' ')),
+                                      Text("(Temps restant)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
+                                    ]
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    height: 100.0,
+                                    width: 0.5,
+                                    color: Colors.white30,
+                                  ),
                                   Column(
                                     children: <Widget>[
                                       Container(
-
+                                        width: 230,
+                                        height:100,
                                         decoration: new BoxDecoration(
-                                            color: Color.fromRGBO(255, 255, 0, 0.5),
+                                            color: Color.fromRGBO(255, 255, 0, 0.4), //new Color.fromRGBO(255, 0, 0, 0.0),,
                                             borderRadius: BorderRadius.only(
                                                 topLeft:  Radius.circular(100.0),
                                                 topRight: Radius.circular(100.0),
-                                                bottomLeft: Radius.circular(0),
-                                                bottomRight: Radius.circular(0))
+                                                bottomLeft: Radius.circular(0.0),
+                                                bottomRight: Radius.circular(0.0))
                                         ),
-                                        child : Row(
-                                          children: <Widget>[
-                                            Text('...............'),
-                                            Icon(Icons.wb_sunny, size: 100, color: Color.fromRGBO(0, 0, 0, 0),),
-                                            Container(height: 5, child: Text(' ')),
-                                            Text('...............', style: TextStyle(fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                      )
-                                      //heure courante + PRMSL
+                                      ),
                                     ],
                                   )
                                 ],
                               ),
                             ),
-                            Row(
-                              children: <Widget>[
-                                Text('            '+ci.sunrise.toString()),
-                                Text('                                                               '),
-                                Text(ci.sunset.toString()),
-                              ],
-                            )
                           ],
                         ),
                       ),
