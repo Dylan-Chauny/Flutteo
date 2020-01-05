@@ -496,7 +496,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('🍃 VENT & PRESSION', style: TextStyle(fontWeight: FontWeight.w500)),
+                            Text('🍃 VENT & PRESSION EN CE MOMENT', style: TextStyle(fontWeight: FontWeight.w500)),
                             Container(
                               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               padding: EdgeInsets.all(10),
@@ -518,8 +518,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.compass, size: 17, color: Colors.lightBlueAccent),
+                                          Icon(FontAwesomeIcons.compass, size: 17, color: Colors.yellow),
                                           Text("  " + cond.windDir.toString()),
+                                          //UPDATE - Prendre celui de l'heure courante PRMSL (passer par hour pour les données du tableau)
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -536,20 +537,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 10, child: Text(' ')),
                                       Row(
                                         children: <Widget>[
+                                          Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
+                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))
+                                          //UPDATE WNDSPD10m
+                                        ],
+                                      ),
+                                      Container(height: 5, child: Text(' ')),
+                                      Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
+                                      Container(height: 10, child: Text(' ')),
+                                      Row(
+                                        children: <Widget>[
                                           Text("🚩", style: TextStyle(fontSize: 15)),
-                                          Text("  "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          Text(" "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          //UPDATE WNDGUST10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
                                       Text("(Vitesse du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
                                       Container(height: 10, child: Text(' ')),
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
-                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10))
                                     ],
                                   ),
                                   Column(
