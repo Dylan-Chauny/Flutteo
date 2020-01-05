@@ -329,17 +329,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Colors.white30,
                               margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                             ),
-                            Row(
+                            Row( //Soucis d'espace fixé
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Column(
                                   children: <Widget>[
                                     Text(fcst1.dayShort.toString()),
-                                    Text(fcst1.dateCalendar.toString())
+                                    Text(fcst1.dateCalendar.toString()+" ")
                                   ],
                                 ),
                                 Image.network(fcst1.icon.toString()),
-                                Text(fcst1.condition.toString()),
+                                Text(" "+fcst1.condition.toString()),
                                 Row(
                                   children: <Widget>[
                                     Text(fcst1.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
