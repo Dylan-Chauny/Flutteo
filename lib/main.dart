@@ -521,7 +521,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.compass, size: 17, color: Colors.yellow),
-                                          Text("  " + cond.windDir.toString()),
+                                          Text("  " + cond.windDir.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
                                           //UPDATE - Prendre celui de l'heure courante PRMSL (passer par hour pour les données du tableau)
                                         ],
                                       ),
@@ -532,7 +532,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightBlueAccent),
-                                          Text("  209°"), // UPDATE windDir10m
+                                          Text("  209°", style: TextStyle(fontWeight: FontWeight.bold)), // UPDATE windDir10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -656,7 +656,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),
-                      Container(height: 20, child: Text('')),
+                      Container(height: 40, child: Text('')),
                     ],
                   ),
                 ),
