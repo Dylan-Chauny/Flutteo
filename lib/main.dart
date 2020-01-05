@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutteo/serializer/hourly_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutteo/serializer/currentConditions.dart';
@@ -18,12 +19,16 @@ var fcst0;
 var fcst1;
 var fcst2;
 var fcst3;
+var currentHourlyData;
 var currentTime;
 var sunrise;
 var sunset;
 var diff;
 var diffHour;
 
+var hourConcerned;
+var jsonData;
+var precipitationIcon;
 
 void main() => runApp(MyApp());
 
@@ -70,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       var data = await _loadJsonAsset();
       print("Fin requête");
-      final jsonData = await json.decode(data.body);
+      jsonData = await json.decode(data.body);
 
       cond = CurrentCondition.fromJson(jsonData['current_condition']);
       //ci = CityInfo.fromJson(jsonData['city_info']);
@@ -79,27 +84,34 @@ class _MyHomePageState extends State<MyHomePage> {
       fcst1 = fcstDay.fromJson(jsonData['fcst_day_1']);
       fcst2 = fcstDay.fromJson(jsonData['fcst_day_2']);
       fcst3 = fcstDay.fromJson(jsonData['fcst_day_3']);
+
+      hourConcerned = cond.hour.toString().replaceAll(":", "H");
+      currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
+
+      var isSnow = currentHourlyData.ISSNOW;
+
+      precipitationIcon = isSnow == 1 ? Icon(Icons.ac_unit, size: 30, color: Colors.white) : Text("💧", style: TextStyle(fontSize: 30));
       print("Valeur récupérées");
 
       var hourSplit = ci.sunset.toString().split(":");
-      var h = hourSplit[0];
-      var m = hourSplit[1];
-
       var date1 = new TimeOfDay.now();
-      var date2 = new TimeOfDay(hour: int.parse(h), minute: int.parse(m));
+      var date2 = new TimeOfDay(hour: int.parse(hourSplit[0]), minute: int.parse(hourSplit[1]));
 
       var now = new DateTime.now();
       var dateTime1 = new DateTime(now.year, now.month, now.day, date1.hour, date1.minute);
       var dateTime2 = new DateTime(now.year, now.month, now.day, date2.hour, date2.minute);
-
       diff = dateTime2.difference(dateTime1).toString().substring(0,4);
+
       var checkHoure = diff.split(':');
       diffHour = int.parse(checkHoure[0]);
 
+      var checkNegativeValue = diff.toString().substring(0,1);
+
       if(diffHour < 10)
-      {
         diff = "0"+diff.toString();
-      }
+
+      if(checkNegativeValue == "-")
+          diff = "00:00";
 
       Timer(Duration(seconds: 2 ), () {
         setState(() {
@@ -169,52 +181,65 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (int i = 0; i < 24; i++) {
       // UPDATE A remplacer avec heure du tableau
+      var hourlyData;
+      var hourForData;
+      var temperature;
 
       if(i == 0)
       {
           hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
           hour = hourStart + ":00";
 
+          hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hour.toString().replaceAll(":", "H")]);
+          temperature = hourlyData.TMP2m;
       }
       else {
           hour = (int.parse(hourStart) + i).toString() + ":00";
           if(int.parse(hourStart) + i > 24)
           {
             //Changement de jours pour les données à récupérer
-
-                indice+= 1;
-                if(indice < 10)
-                    hour = "0"+indice.toString() + ":00";
-                else
-                    hour = indice.toString() + ":00";
+              indice+= 1;
+              if(indice < 10)
+              {
+                 hour = "0"+indice.toString() + ":00";
+                 hourForData = indice.toString() + "H00";
+              }
+              else
+              {
+                  hour = indice.toString() + ":00";
+                  hourForData = indice.toString() + "H00";
+              }
+              hourlyData = hourly.fromJson(jsonData['fcst_day_1']['hourly_data'][hourForData.toString().replaceAll(":", "H")]);
+          }
+          else {
+              hourForData = hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
+              hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
           }
       }
 
-      // Aller chercher les données sur hour dans le json
-      // Remplacer les : par H pour le json
-
-      int temperature = Random().nextInt(36);
-      var icon = temperature < 10 ? Icon(FontAwesomeIcons.thermometerEmpty, size: 16, color: Colors.lightBlueAccent,) :
-                 temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 16, color: Colors.yellowAccent):
-                 temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 16, color: Colors.orangeAccent):
-                 Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 16, color: Colors.redAccent);
+      temperature = hourlyData.TMP2m;
+      var icon = temperature < 10 ? Icon(FontAwesomeIcons.thermometerEmpty, size: 17, color: Colors.lightBlueAccent,) :
+                 temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17, color: Colors.yellowAccent):
+                 temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17, color: Colors.orangeAccent):
+                 Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17, color: Colors.redAccent);
 
       l.add(Container(
         margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-        width: 47.0,
+        width: 60.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(hour, style: TextStyle(fontWeight: FontWeight.bold)),
             Container(height: 5, child: Text(' ')),
-            Icon(Icons.wb_sunny, size: 50.0, color: Colors.amberAccent),
+            Image.network(hourlyData.ICON.toString(), height: 50.0),
             Container(height: 5, child: Text(' ')),
-            Text("💧 22%", style: TextStyle(fontWeight: FontWeight.w300)),
+            Text("💧 "+hourlyData.RH2m.toString() +"%", style: TextStyle(fontWeight: FontWeight.w300)),
             Container(height: 5, child: Text(' ')),
             Row(
               children: <Widget>[
+                Text("  "),
                 icon,
-                Text(" ${temperature}°", style: TextStyle(fontWeight: FontWeight.w300))
+                Text(" ${temperature.toString()}°", style: TextStyle(fontWeight: FontWeight.w300))
               ],
             )
           ],
@@ -263,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Text(cond.condition.toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20)),
                           Row(children: <Widget>[
-                            Text('5°', style: TextStyle(fontSize: 100.0, fontWeight: FontWeight.w300)),
+                            Text(cond.tmp.toString()+'°', style: TextStyle(fontSize: 100.0, fontWeight: FontWeight.w300)),
                             Text('C', style: TextStyle(fontSize: 30.0))
                           ],),
                           Row(children: <Widget>[
@@ -274,12 +299,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             Row(
                               children: <Widget>[
                                 Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
-                                Text('2°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
+                                Text(currentHourlyData.WNDCHILL2m.toString()+'°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
 
                               ],
                             )
                           ],)
-                          //UPDATE sensation : WindChill dans l'heure current
                         ],
                       ),
                       Image.network(cond.iconBig.toString())
@@ -443,7 +467,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('🔎 DÉTAILS ACTUELS', style: TextStyle(fontWeight: FontWeight.w500)),
+                            Text('🔎 DONNÉES ACTUELLES', style: TextStyle(fontWeight: FontWeight.w500)),
                             Container(
                               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               padding: EdgeInsets.all(10),
@@ -477,13 +501,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text("Précipitation"),
-                                      //UPDATE Vérifier si ISSNOW dans fcst0 renvoie 1 alors mettre icone de neige (☃)
                                       Container(height: 5, child: Text(' ')),
-                                      Text("💧", style: TextStyle(fontSize: 30)),
-                                      //Icon(Icons.ac_unit, size: 30, color: Colors.white,),
+                                      precipitationIcon,
                                       Container(height: 10, child: Text(' ')),
-                                      Text("0.3mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                      //UPDATE heure courante + APCPsfc
+                                      Text(currentHourlyData.APCPsfc.toString()+"mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
                                   ),
                                   Container(
@@ -511,8 +532,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 5, child: Text(' ')),
                                       Text('🌩', style: TextStyle(fontSize: 30)),
                                       Container(height: 10, child: Text(' ')),
-                                      Text("100%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                      //UPDATE heure courante + KINDEX
+                                      Text(currentHourlyData.KINDEX.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
                                   )
                                 ],
@@ -552,7 +572,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.compass, size: 17, color: Colors.yellow),
                                           Text("  " + cond.windDir.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
-                                          //UPDATE - Prendre celui de l'heure courante PRMSL (passer par hour pour les données du tableau)
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -563,7 +582,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightGreen),
-                                          Text("  209°", style: TextStyle(fontWeight: FontWeight.bold)), // UPDATE windDir10m
+                                          Text("  "+currentHourlyData.WNDDIR10m.toString()+"°", style: TextStyle(fontWeight: FontWeight.bold)), // UPDATE windDir10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -574,7 +593,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         children: <Widget>[
                                           Text("🚩", style: TextStyle(fontSize: 15)),
                                           Text(" "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
-                                          //UPDATE WNDGUST10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -584,8 +602,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
-                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))
-                                          //UPDATE WNDSPD10m
+                                          Text('  '+cond.windSpeed.toString()+'%', style: TextStyle(fontWeight: FontWeight.bold))
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -599,8 +616,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 5, child: Text(' ')),
                                       Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white,),
                                       Container(height: 5, child: Text(' ')),
-                                      Text('1000 mbar', style: TextStyle(fontWeight: FontWeight.w200))
-                                      //UPDATE heure courante + PRMSL
+                                      Text(cond.pressure.toString()+' hPA', style: TextStyle(fontWeight: FontWeight.w200)),
+                                      Text('('+(cond.pressure/1.013).floor().toString()+' Bar)', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12))
                                     ],
                                   )
                                 ],
@@ -660,7 +677,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ]
                                   ),
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                                    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                                     height: 100.0,
                                     width: 0.5,
                                     color: Colors.white30,
