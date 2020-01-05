@@ -432,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text("Humidité"),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black,),
+                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black54,),
                                       Container(height: 10, child: Text(' ')),
                                       Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
