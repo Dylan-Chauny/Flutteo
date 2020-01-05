@@ -243,7 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Row(
                               children: <Widget>[
                                 Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
-                                Text('2°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w200)),
+                                Text('2°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
 
                               ],
                             )
