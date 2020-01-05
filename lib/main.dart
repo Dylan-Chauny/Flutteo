@@ -497,7 +497,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('🍃 VENT & PRESSION EN CE MOMENT', style: TextStyle(fontWeight: FontWeight.w500)),
+                            Text('💨 VENT & PRESSION EN CE MOMENT', style: TextStyle(fontWeight: FontWeight.w500)),
                             Container(
                               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               padding: EdgeInsets.all(10),
