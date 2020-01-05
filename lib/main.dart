@@ -528,9 +528,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text("(Orientation du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
                                       Container(height: 10, child: Text(' ')),
 
+
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightBlueAccent),
+                                          Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightGreen),
                                           Text("  209°", style: TextStyle(fontWeight: FontWeight.bold)), // UPDATE windDir10m
                                         ],
                                       ),
@@ -565,9 +566,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text('Pression'),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.tachometerAlt, color: Colors.lightGreen,),
+                                      Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white,),
                                       Container(height: 5, child: Text(' ')),
-                                      Text('1000 mbar', style: TextStyle(fontWeight: FontWeight.bold))
+                                      Text('1000 mbar', style: TextStyle(fontWeight: FontWeight.w200))
                                       //UPDATE heure courante + PRMSL
                                     ],
                                   )
