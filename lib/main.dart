@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'package:flutteo/serializer/hourly_data.dart';
 import 'package:flutter/material.dart';
@@ -88,9 +89,9 @@ class _MyHomePageState extends State<MyHomePage> {
       hourConcerned = cond.hour.toString().replaceAll(":", "H");
       currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
-      var isSnow = currentHourlyData.ISSNOW;
+      var isSnow = 1;
 
-      precipitationIcon = isSnow == 1 ? Icon(Icons.ac_unit, size: 30, color: Colors.white) : Text("💧", style: TextStyle(fontSize: 30));
+      precipitationIcon = isSnow == 1 ? Icon(Icons.ac_unit, size: 35, color: Colors.white) : Text("💧", style: TextStyle(fontSize: 30));
       print("Valeur récupérées");
 
       var hourSplit = ci.sunset.toString().split(":");
@@ -224,17 +225,21 @@ class _MyHomePageState extends State<MyHomePage> {
                  Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17, color: Colors.redAccent);
 
       l.add(Container(
-        margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+        margin: EdgeInsets.fromLTRB(7, 0, 8, 0),
         width: 60.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(hour, style: TextStyle(fontWeight: FontWeight.bold)),
-            Container(height: 5, child: Text(' ')),
-            Image.network(hourlyData.ICON.toString(), height: 50.0),
-            Container(height: 5, child: Text(' ')),
+            Image.network(hourlyData.ICON.toString(), height: 60.0),
             Text("💧 "+hourlyData.RH2m.toString() +"%", style: TextStyle(fontWeight: FontWeight.w300)),
             Container(height: 5, child: Text(' ')),
+            Container(
+              height: 0.20,
+              width: 100,
+              color: Colors.white,
+            ),
+            Container(height: 3, child: Text(' ')),
             Row(
               children: <Widget>[
                 Text("  "),
@@ -298,7 +303,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text(fcst0.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent),),
                             Row(
                               children: <Widget>[
-                                Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
+                                Text('  '),
+                                Text('On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
                                 Text(currentHourlyData.WNDCHILL2m.toString()+'°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
 
                               ],
@@ -349,7 +355,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         child: Column(
                           children: <Widget>[
-                            Text(cond.condition.toString() + " de " + fcst0.dayLong.toString() +" jusqu'à " + fcst1.dayLong.toString() +" matin", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w200), textAlign: TextAlign.center),
+                            Text(fcst0.condition.toString() + " de " + fcst0.dayLong.toString() +" jusqu'à " + fcst1.dayLong.toString() +" matin", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w200), textAlign: TextAlign.center),
                             Container(height: 5, child: Text('')),
                             Container(
                               height: 1,
@@ -617,7 +623,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white,),
                                       Container(height: 5, child: Text(' ')),
                                       Text(cond.pressure.toString()+' hPA', style: TextStyle(fontWeight: FontWeight.w200)),
-                                      Text('('+(cond.pressure/1.013).floor().toString()+' Bar)', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12))
+                                      Text('('+(cond.pressure*1.013).floor().toString()+' Bar)', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12))
                                     ],
                                   )
                                 ],
