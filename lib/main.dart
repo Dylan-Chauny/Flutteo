@@ -87,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
       fcst3 = fcstDay.fromJson(jsonData['fcst_day_3']);
 
       hourConcerned = cond.hour.toString().replaceAll(":", "H");
+      hourConcerned = hourConcerned.replaceAll("00H", "0H");
       currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
       var isSnow = 1;
@@ -191,7 +192,9 @@ class _MyHomePageState extends State<MyHomePage> {
           hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
           hour = hourStart + ":00";
 
-          hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hour.toString().replaceAll(":", "H")]);
+          var hourData = hour.toString().replaceAll("00:", "0:");
+
+          hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
           temperature = hourlyData.TMP2m;
       }
       else {
