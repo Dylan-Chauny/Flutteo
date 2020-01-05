@@ -241,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text(fcst0.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent),),
                             Row(
                               children: <Widget>[
-                                Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w200)),
+                                Text(' On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
                                 Text('2°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w200)),
 
                               ],
@@ -635,7 +635,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         width: 230,
                                         height:100,
                                         decoration: new BoxDecoration(
-                                            color: Color.fromRGBO(255, 255, 0, 0.4), //new Color.fromRGBO(255, 0, 0, 0.0),,
+                                            color: Color.fromRGBO(255, 200, 0, 0.6), //new Color.fromRGBO(255, 0, 0, 0.0),,
                                             borderRadius: BorderRadius.only(
                                                 topLeft:  Radius.circular(100.0),
                                                 topRight: Radius.circular(100.0),
