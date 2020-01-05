@@ -21,6 +21,8 @@ var fcst3;
 var currentTime;
 var sunrise;
 var sunset;
+var diff;
+var diffHour;
 
 
 void main() => runApp(MyApp());
@@ -78,13 +80,30 @@ class _MyHomePageState extends State<MyHomePage> {
       fcst2 = fcstDay.fromJson(jsonData['fcst_day_2']);
       fcst3 = fcstDay.fromJson(jsonData['fcst_day_3']);
       print("Valeur récupérées");
-      //print(fcst0.hourlyData.toString());
+
+      var hourSplit = ci.sunset.toString().split(":");
+      var h = hourSplit[0];
+      var m = hourSplit[1];
+
+      var date1 = new TimeOfDay.now();
+      var date2 = new TimeOfDay(hour: int.parse(h), minute: int.parse(m));
+
+      var now = new DateTime.now();
+      var dateTime1 = new DateTime(now.year, now.month, now.day, date1.hour, date1.minute);
+      var dateTime2 = new DateTime(now.year, now.month, now.day, date2.hour, date2.minute);
+
+      diff = dateTime2.difference(dateTime1).toString().substring(0,4);
+      var checkHoure = diff.split(':');
+      diffHour = int.parse(checkHoure[0]);
+
+      if(diffHour < 10)
+      {
+        diff = "0"+diff.toString();
+      }
 
       Timer(Duration(seconds: 2 ), () {
         setState(() {
           loading = true;
-          //currentTime 17:52
-          //sunset = ci.sunset.toString(); //18:43
         });
       });
     }
@@ -92,6 +111,18 @@ class _MyHomePageState extends State<MyHomePage> {
     {
       print(e);
     }
+  }
+
+  ContainerWidth() {
+
+    var map = new Map<int, String>();
+
+    for (int k = 0; k < 25; k++) {
+      map[k] = (k*10).toString();
+    }
+    //12h = 120 width
+
+    print(map);
   }
 
   @override
@@ -358,7 +389,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
+                              children: <Widget>[ 
                                 Column(
                                   children: <Widget>[
                                     Text(fcst2.dayShort.toString()),
@@ -621,7 +652,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 10, child: Text(' ')),
                                       Row(
                                         children: <Widget>[
-                                          Text("⌛ 3:20", style: TextStyle(fontWeight: FontWeight.bold)),
+                                          Text("⌛ "+diff, style: TextStyle(fontWeight: FontWeight.bold)),
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
@@ -629,7 +660,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ]
                                   ),
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    margin: EdgeInsets.fromLTRB(20, 0, 10, 0),
                                     height: 100.0,
                                     width: 0.5,
                                     color: Colors.white30,
@@ -637,16 +668,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 230,
+                                        width: 240,
                                         height:100,
                                         decoration: new BoxDecoration(
-                                            color: Color.fromRGBO(255, 200, 0, 0.6), //new Color.fromRGBO(255, 0, 0, 0.0),,
+                                            color: Color.fromRGBO(255, 200, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),,
                                             borderRadius: BorderRadius.only(
                                                 topLeft:  Radius.circular(100.0),
-                                                topRight: Radius.circular(100.0),
-                                                bottomLeft: Radius.circular(0.0),
-                                                bottomRight: Radius.circular(0.0))
+                                                topRight: Radius.circular(100.0))
                                         ),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              height: 100,
+                                              width: 120,
+                                              decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(255, 200, 0, 0.6),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:  Radius.circular(100.0),
+                                                  topRight: Radius.circular(0.0))
+                                              ),
+                                            ),
+                                          ],
+                                        )
                                       ),
                                     ],
                                   )
