@@ -103,11 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
     var hour = current.hour.toString();
 
     if(int.parse(min) < 10)
-    {
         min = "0"+ min;
-    }
-    currentTime = hour + ":" + min;
 
+    if(int.parse(hour) < 10)
+        hour = "0"+ hour;
+
+    currentTime = hour + ":" + min;
     loadJson();
   }
 
@@ -516,6 +517,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
+
                                       Row(
                                         children: <Widget>[
                                           Icon(FontAwesomeIcons.compass, size: 17, color: Colors.yellow),
@@ -526,25 +528,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(height: 5, child: Text(' ')),
                                       Text("(Orientation du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
                                       Container(height: 10, child: Text(' ')),
+
                                       Row(
                                         children: <Widget>[
-                                          Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.red),
+                                          Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightBlueAccent),
                                           Text("  209°"), // UPDATE windDir10m
                                         ],
                                       ),
                                       Container(height: 5, child: Text(' ')),
                                       Text("(Direction du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
                                       Container(height: 10, child: Text(' ')),
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
-                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))
-                                          //UPDATE WNDSPD10m
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
+
                                       Row(
                                         children: <Widget>[
                                           Text("🚩", style: TextStyle(fontSize: 15)),
@@ -554,6 +548,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                       Container(height: 5, child: Text(' ')),
                                       Text("(Vitesse du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
+                                      Container(height: 10, child: Text(' ')),
+
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
+                                          Text('  30%', style: TextStyle(fontWeight: FontWeight.bold))
+                                          //UPDATE WNDSPD10m
+                                        ],
+                                      ),
+                                      Container(height: 5, child: Text(' ')),
+                                      Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
                                       Container(height: 10, child: Text(' ')),
                                     ],
                                   ),
