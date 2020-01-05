@@ -255,8 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                Container(height: 20, child: Text(''), //new Color.fromRGBO(255, 0, 0, 0.0),
-                ),
+                Container(height: 20, child: Text('')),
                 Container(
                     margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                     height: 130,
