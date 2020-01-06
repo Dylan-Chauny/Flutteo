@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
-      var isSnow = 1;
+      var isSnow = currentHourlyData.ISSNOW;
 
       precipitationIcon = isSnow == 1 ? Icon(Icons.ac_unit, size: 35, color: Colors.white) : Text("💧", style: TextStyle(fontSize: 30));
       print("Valeur récupérées");
