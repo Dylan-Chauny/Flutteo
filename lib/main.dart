@@ -78,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
       print("Fin requête");
       jsonData = await json.decode(data.body);
 
+      //Erreur ici si heure = 01H00 au lieu de 1H00
+
       cond = CurrentCondition.fromJson(jsonData['current_condition']);
       //ci = CityInfo.fromJson(jsonData['city_info']);
       ci = CityInfo.fromJson(jsonData['city_info']);
@@ -187,12 +189,17 @@ class _MyHomePageState extends State<MyHomePage> {
       var hourForData;
       var temperature;
 
+      //Erreur ici si heure = 01H00 au lieu de 1H00
+
       if(i == 0)
       {
           hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
           hour = hourStart + ":00";
 
           var hourData = hour.toString().replaceAll("00:", "0:");
+
+          if(hourData.substring(0,1) == "0")
+            hourData = hourData.substring(1);
 
           hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
           temperature = hourlyData.TMP2m;
