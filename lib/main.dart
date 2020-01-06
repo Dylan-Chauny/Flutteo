@@ -89,7 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
       fcst3 = fcstDay.fromJson(jsonData['fcst_day_3']);
 
       hourConcerned = cond.hour.toString().replaceAll(":", "H");
+
+      //Cas de Minuit:
       hourConcerned = hourConcerned.replaceAll("00H", "0H");
+
+      //Cas d'heure avant 10H
+      if(hourConcerned.toString().substring(0,1) == "0")
+          hourConcerned = hourConcerned.toString().substring(1);
+
+
       currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
       var isSnow = 1;
