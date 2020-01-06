@@ -507,22 +507,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text("Humidité"),
-                                      Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black54,),
-                                      Container(height: 10, child: Text(' ')),
-                                      Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 100.0,
-                                    width: 0.5,
-                                    color: Colors.white30,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text("Précipitation"),
                                       Container(height: 5, child: Text(' ')),
@@ -538,7 +522,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Column(
                                     children: <Widget>[
-                                      Text("Elevation"),
+                                      Text("Humidité"),
+                                      Container(height: 5, child: Text(' ')),
+                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black54,),
+                                      Container(height: 10, child: Text(' ')),
+                                      Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 100.0,
+                                    width: 0.5,
+                                    color: Colors.white30,
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Text("Altitude"),
                                       Container(height: 5, child: Text(' ')),
                                       Text("⛰️", style: TextStyle(fontSize: 30)),
                                       Container(height: 10, child: Text(' ')),
