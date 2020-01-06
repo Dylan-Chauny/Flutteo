@@ -304,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(height: 20, child: Text('')),
                 Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
