@@ -399,7 +399,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst0.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null)
+                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70),  onPressed: null)
                               ],
                             ),
                             Container(
@@ -426,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst1.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios),  onPressed: null)
+                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70),  onPressed: null)
                               ],
                             ),
                             Container(
@@ -453,7 +453,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst2.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
+                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70), onPressed: null),
                               ],
                             ),
                             Container(
@@ -480,7 +480,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Text(fcst3.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
                                   ],
                                 ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null)
+                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70), onPressed: null)
                               ],
                             )
                           ],
