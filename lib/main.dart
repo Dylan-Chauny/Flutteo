@@ -192,12 +192,10 @@ class _MyHomePageState extends State<MyHomePage> {
     var indice = 0;
 
     for (int i = 0; i < 24; i++) {
-      // UPDATE A remplacer avec heure du tableau
       var hourlyData;
       var hourForData;
       var temperature;
 
-      //Erreur ici si heure = 01H00 au lieu de 1H00
 
       if(i == 0)
       {
@@ -216,7 +214,6 @@ class _MyHomePageState extends State<MyHomePage> {
           hour = (int.parse(hourStart) + i).toString() + ":00";
           if(int.parse(hourStart) + i > 24)
           {
-            //Changement de jours pour les données à récupérer
               indice+= 1;
               if(indice < 10)
               {
@@ -750,3 +747,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+/*
+hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
+
+//HOUR
+fcstDay0.dayShort.toString();
+fcstDay0.date.toString().replaceFirst(".", "/").substring(0,5); // 08/01
+
+hourlyData.ICON.toString();
+
+hourlyData.TMP2m.toString();
+hourlyData.DPT2m.toString(); //Temp point rosée
+hourlyData.WNDCHILL2m.toString(); //Temp ressentie
+hourlyData.CONDITION.toString();
+hourlyData.APCPsfc.toString(); //Précipitation
+hourlyData.RH2m.toString(); // Humidité
+hourlyData.WNDGUST10m.toString(); // Vitesse vent 10km +
+hourlyData.PRMSL.toString(); // Pression
+hourlyData.ISSNOW.toString() // Savoir s'il pleut ou neige
+
+
+
+
+hourlyData.
+ */
