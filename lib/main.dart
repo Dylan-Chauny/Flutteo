@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       var isSnow = currentHourlyData.ISSNOW;
 
-      precipitationIcon = isSnow == 1 ? Icon(Icons.ac_unit, size: 35, color: Colors.white) : Text("💧", style: TextStyle(fontSize: 30));
+      precipitationIcon = isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text("🌧", style: TextStyle(fontSize: 30));
       print("Valeur récupérées");
 
       var hourSplit = ci.sunset.toString().split(":");
@@ -414,11 +414,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Column(
                                   children: <Widget>[
                                     Text(fcst1.dayShort.toString()),
-                                    Text(fcst1.dateCalendar.toString()+" ")
+                                    Text(fcst1.dateCalendar.toString())
                                   ],
                                 ),
                                 Image.network(fcst1.icon.toString()),
-                                Text(" "+fcst1.condition.toString()),
+                                Text(fcst1.condition.toString()),
                                 Row(
                                   children: <Widget>[
                                     Text(fcst1.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
@@ -524,7 +524,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: <Widget>[
                                       Text("Humidité"),
                                       Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.umbrella, size: 35, color: Colors.black54,),
+                                      Text("☔ ", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 30)),
                                       Container(height: 10, child: Text(' ')),
                                       Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
                                     ],
