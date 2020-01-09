@@ -69,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _loadJsonAsset() async {
     print("Debut requête");
-    return await(http.get("https://www.prevision-meteo.ch/services/json/limoges"));
+    return await(http.get(
+        "https://www.prevision-meteo.ch/services/json/limoges"));
   }
 
   void loadJson() async {
@@ -94,55 +95,59 @@ class _MyHomePageState extends State<MyHomePage> {
       hourConcerned = hourConcerned.replaceAll("00H", "0H");
 
       //Cas d'heure avant 10H
-      if(hourConcerned.toString().substring(0,1) == "0")
-          hourConcerned = hourConcerned.toString().substring(1);
+      if (hourConcerned.toString().substring(0, 1) == "0")
+        hourConcerned = hourConcerned.toString().substring(1);
 
 
-      currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
+      currentHourlyData =
+          hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
       var isSnow = currentHourlyData.ISSNOW;
 
-      precipitationIcon = isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text("🌧", style: TextStyle(fontSize: 30));
+      precipitationIcon =
+      isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text(
+          "🌧", style: TextStyle(fontSize: 30));
       print("Valeur récupérées");
 
       var hourSplit = ci.sunset.toString().split(":");
       var date1 = new TimeOfDay.now();
-      var date2 = new TimeOfDay(hour: int.parse(hourSplit[0]), minute: int.parse(hourSplit[1]));
+      var date2 = new TimeOfDay(
+          hour: int.parse(hourSplit[0]), minute: int.parse(hourSplit[1]));
 
       var now = new DateTime.now();
-      var dateTime1 = new DateTime(now.year, now.month, now.day, date1.hour, date1.minute);
-      var dateTime2 = new DateTime(now.year, now.month, now.day, date2.hour, date2.minute);
-      diff = dateTime2.difference(dateTime1).toString().substring(0,4);
+      var dateTime1 = new DateTime(
+          now.year, now.month, now.day, date1.hour, date1.minute);
+      var dateTime2 = new DateTime(
+          now.year, now.month, now.day, date2.hour, date2.minute);
+      diff = dateTime2.difference(dateTime1).toString().substring(0, 4);
 
       var checkHoure = diff.split(':');
       diffHour = int.parse(checkHoure[0]);
 
-      var checkNegativeValue = diff.toString().substring(0,1);
+      var checkNegativeValue = diff.toString().substring(0, 1);
 
-      if(diffHour < 10)
-        diff = "0"+diff.toString();
+      if (diffHour < 10)
+        diff = "0" + diff.toString();
 
-      if(checkNegativeValue == "-")
-          diff = "00:00";
+      if (checkNegativeValue == "-")
+        diff = "00:00";
 
-      Timer(Duration(seconds: 2 ), () {
+      Timer(Duration(seconds: 2), () {
         setState(() {
           loading = true;
         });
       });
     }
-    catch (e)
-    {
+    catch (e) {
       print(e);
     }
   }
 
   ContainerWidth() {
-
     var map = new Map<int, String>();
 
     for (int k = 0; k < 25; k++) {
-      map[k] = (k*10).toString();
+      map[k] = (k * 10).toString();
     }
     //12h = 120 width
 
@@ -151,17 +156,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-
     var current = new DateTime.now();
 
     var min = current.minute.toString();
     var hour = current.hour.toString();
 
-    if(int.parse(min) < 10)
-        min = "0"+ min;
+    if (int.parse(min) < 10)
+      min = "0" + min;
 
-    if(int.parse(hour) < 10)
-        hour = "0"+ hour;
+    if (int.parse(hour) < 10)
+      hour = "0" + hour;
 
     currentTime = hour + ":" + min;
     loadJson();
@@ -171,10 +175,19 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context, MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(title: Text('My Page')),
+          appBar: AppBar(
+            title: Text('Donnée quotidiennes'),
+            elevation: 0.0,
+            backgroundColor: Colors.greenAccent,
+          ),
           body: Center(
             child: FlatButton(
-              child: Text('POP'),
+              child: Container(
+                child: ListView(
+                  // This next line does the trick.
+                  children: containers_hour(),
+                ),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -197,47 +210,54 @@ class _MyHomePageState extends State<MyHomePage> {
       var temperature;
 
 
-      if(i == 0)
-      {
-          hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
-          hour = hourStart + ":00";
+      if (i == 0) {
+        hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
+        hour = hourStart + ":00";
 
-          var hourData = hour.toString().replaceAll("00:", "0:");
+        var hourData = hour.toString().replaceAll("00:", "0:");
 
-          if(hourData.substring(0,1) == "0")
-            hourData = hourData.substring(1);
+        if (hourData.substring(0, 1) == "0")
+          hourData = hourData.substring(1);
 
-          hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
-          temperature = hourlyData.TMP2m;
+        hourlyData = hourly.fromJson(
+            jsonData['fcst_day_0']['hourly_data'][hourData.toString()
+                .replaceAll(":", "H")]);
+        temperature = hourlyData.TMP2m;
       }
       else {
-          hour = (int.parse(hourStart) + i).toString() + ":00";
-          if(int.parse(hourStart) + i > 24)
-          {
-              indice+= 1;
-              if(indice < 10)
-              {
-                 hour = "0"+indice.toString() + ":00";
-                 hourForData = indice.toString() + "H00";
-              }
-              else
-              {
-                  hour = indice.toString() + ":00";
-                  hourForData = indice.toString() + "H00";
-              }
-              hourlyData = hourly.fromJson(jsonData['fcst_day_1']['hourly_data'][hourForData.toString().replaceAll(":", "H")]);
+        hour = (int.parse(hourStart) + i).toString() + ":00";
+        if (int.parse(hourStart) + i > 24) {
+          indice += 1;
+          if (indice < 10) {
+            hour = "0" + indice.toString() + ":00";
+            hourForData = indice.toString() + "H00";
           }
           else {
-              hourForData = hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
-              hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
+            hour = indice.toString() + ":00";
+            hourForData = indice.toString() + "H00";
           }
+          hourlyData = hourly.fromJson(
+              jsonData['fcst_day_1']['hourly_data'][hourForData.toString()
+                  .replaceAll(":", "H")]);
+        }
+        else {
+          hourForData =
+              hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
+          hourlyData = hourly.fromJson(
+              jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
+        }
       }
 
       temperature = hourlyData.TMP2m;
-      var icon = temperature < 10 ? Icon(FontAwesomeIcons.thermometerEmpty, size: 17, color: Colors.lightBlueAccent,) :
-                 temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17, color: Colors.yellowAccent):
-                 temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17, color: Colors.orangeAccent):
-                 Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17, color: Colors.redAccent);
+      var icon = temperature < 10 ? Icon(
+        FontAwesomeIcons.thermometerEmpty, size: 17,
+        color: Colors.lightBlueAccent,) :
+      temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17,
+          color: Colors.yellowAccent) :
+      temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17,
+          color: Colors.orangeAccent) :
+      Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17,
+          color: Colors.redAccent);
 
       l.add(Container(
         margin: EdgeInsets.fromLTRB(7, 0, 8, 0),
@@ -247,7 +267,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(hour, style: TextStyle(fontWeight: FontWeight.bold)),
             Image.network(hourlyData.ICON.toString(), height: 60.0),
-            Text("💧 "+hourlyData.RH2m.toString() +"%", style: TextStyle(fontWeight: FontWeight.w300)),
+            Text("💧 " + hourlyData.RH2m.toString() + "%",
+                style: TextStyle(fontWeight: FontWeight.w300)),
             Container(height: 5, child: Text(' ')),
             Container(
               height: 0.20,
@@ -259,7 +280,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Text("  "),
                 icon,
-                Text(" ${temperature.toString()}°", style: TextStyle(fontWeight: FontWeight.w300))
+                Text(" ${temperature.toString()}°",
+                    style: TextStyle(fontWeight: FontWeight.w300))
               ],
             )
           ],
@@ -269,506 +291,684 @@ class _MyHomePageState extends State<MyHomePage> {
     return l;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: !loading ? Container(
-        height: 1000,
-        color: Colors.white,
-        child: Image.network('https://cdn.discordapp.com/attachments/418499901215735808/663047823813640193/Logo.png'),
-      ) :
-      Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: ListView(
+  List<Widget> containers_hour() {
+    List<Widget> l = new List();
+
+    for (int i = 0; i < 24; i++) {
+      var hourStart = i.toString() + "H00";
+      var hourlyData;
+
+      hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourStart]);
+
+      var typePrecipitation =   hourlyData.ISSNOW == 1 ? "Neige" : "Pluie";
+
+      l.add(Container(
+        margin: EdgeInsets.fromLTRB(8, 30, 8, 0),
+        width: 60.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Column(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(ci.name.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
-                      Text(currentTime.toString(), style: TextStyle(fontWeight: FontWeight.w300))
-                    ],
-                  ),
-                ),
-                Container(height: 20, child: Text('')),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(cond.condition.toString(), style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20)),
-                          Row(children: <Widget>[
-                            Text(cond.tmp.toString()+'°', style: TextStyle(fontSize: 100.0, fontWeight: FontWeight.w300)),
-                            Text('C', style: TextStyle(fontSize: 30.0))
-                          ],),
-                          Row(children: <Widget>[
-                            Icon(FontAwesomeIcons.arrowUp, size: 15, color: Colors.red,),
-                            Text(fcst0.tmax.toString() + '°', style: TextStyle(color: Colors.red),),
-                            Icon(FontAwesomeIcons.arrowDown, size: 15, color: Colors.lightBlueAccent,),
-                            Text(fcst0.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent),),
-                            Row(
-                              children: <Widget>[
-                                Text('  '),
-                                Text('On a la sensation de : ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
-                                Text(currentHourlyData.WNDCHILL2m.toString()+'°', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
+                Text(hourStart.toString()),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Image.network(hourlyData.ICON.toString(), height: 150)
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(hourlyData.TMP2m.toString()+"°"),
+                Text(hourlyData.CONDITION.toString(), style: TextStyle(fontWeight: FontWeight.w300),),
+                Text("Température ressentie: "+hourlyData.WNDCHILL2m.toString()),
+                Text("Point rosée: "+hourlyData.DPT2m.toString()),
+                Text("Précipitation: "+hourlyData.APCPsfc.toString()),
+                Text("Humidité: "+hourlyData.RH2m.toString()),
+                Text("Vent +10km/h: "+hourlyData.WNDGUST10m.toString()),
+                Text("Pression: "+hourlyData.PRMSL.toString()),
+                Text("Type de précipitation: "+typePrecipitation.toString()),
+              ],
+            ),
+          ],
+        ),
+      ));
+    }
+    return l;
+  }
 
-                              ],
-                            )
-                          ],)
-                        ],
-                      ),
-                      Image.network(cond.iconBig.toString())
-                    ],
-                  ),
-                ),
-                Container(height: 20, child: Text('')),
-                Container(
-                    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    height: 130,
-                    decoration: new BoxDecoration(
-                        color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
-                        borderRadius: BorderRadius.only(
-                            topLeft:  Radius.circular(5.0),
-                            topRight: Radius.circular(5.0),
-                            bottomLeft: Radius.circular(5.0),
-                            bottomRight: Radius.circular(5.0))
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        body: !loading ? Container(
+          height: 1000,
+          color: Colors.white,
+          child: Image.network(
+              'https://cdn.discordapp.com/attachments/418499901215735808/663047823813640193/Logo.png'),
+        ) :
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  "https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: ListView(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(ci.name.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold,
+                                fontSize: 22.0)),
+                        Text(currentTime.toString(),
+                            style: TextStyle(fontWeight: FontWeight.w300))
+                      ],
                     ),
-                    padding: EdgeInsets.all(5),
-                    child:  ListView(
-                      // This next line does the trick.
-                      scrollDirection: Axis.horizontal,
-                      children: containers(),
-                    )
-                ),
-                Container(height: 20, child: Text('')),
-                Container(
-                  margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('📅 PRÉVISIONS QUOTIDIENNES', style: TextStyle(fontWeight: FontWeight.w500)),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        padding: EdgeInsets.all(10),
-                        decoration: new BoxDecoration(
-                            color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
-                            borderRadius: BorderRadius.only(
-                                topLeft:  Radius.circular(5.0),
-                                topRight: Radius.circular(5.0),
-                                bottomLeft: Radius.circular(5.0),
-                                bottomRight: Radius.circular(5.0))
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Text(fcst0.condition.toString() + " de " + fcst0.dayLong.toString() +" jusqu'à " + fcst1.dayLong.toString() +" matin", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w200), textAlign: TextAlign.center),
-                            Container(height: 5, child: Text('')),
-                            Container(
-                              height: 1,
-                              width: 400,
-                              color: Colors.white30,
-                            ),
-                            Container(height: 5, child: Text('')),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(fcst0.dayShort.toString()),
-                                    Text(fcst0.dateCalendar.toString())
-                                  ],
-                                ),
-                                Image.network(fcst0.icon.toString()),
-                                Text(fcst0.condition.toString()),
-                                Row(
-                                  children: <Widget>[
-                                    Text(fcst0.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
-                                    Text('| '),
-                                    Text(fcst0.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
-                                  ],
-                                ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70),  onPressed: null)
-                              ],
-                            ),
-                            Container(
-                              height: 0.25,
-                              width: 400,
-                              color: Colors.white30,
-                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                            ),
-                            Row( //Soucis d'espace fixé
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(fcst1.dayShort.toString()),
-                                    Text(fcst1.dateCalendar.toString())
-                                  ],
-                                ),
-                                Image.network(fcst1.icon.toString()),
-                                Text(fcst1.condition.toString()),
-                                Row(
-                                  children: <Widget>[
-                                    Text(fcst1.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
-                                    Text('| '),
-                                    Text(fcst1.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
-                                  ],
-                                ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70),  onPressed: null)
-                              ],
-                            ),
-                            Container(
-                              height: 0.25,
-                              width: 400,
-                              color: Colors.white30,
-                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[ 
-                                Column(
-                                  children: <Widget>[
-                                    Text(fcst2.dayShort.toString()),
-                                    Text(fcst2.dateCalendar.toString())
-                                  ],
-                                ),
-                                Image.network(fcst2.icon.toString()),
-                                Text(fcst2.condition.toString()),
-                                Row(
-                                  children: <Widget>[
-                                    Text(fcst2.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
-                                    Text('| '),
-                                    Text(fcst2.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
-                                  ],
-                                ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70), onPressed: null),
-                              ],
-                            ),
-                            Container(
-                              height: 0.25,
-                              width: 400,
-                              color: Colors.white30,
-                              margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(fcst3.dayShort.toString()),
-                                    Text(fcst3.dateCalendar.toString())
-                                  ],
-                                ),
-                                Image.network(fcst3.icon.toString()),
-                                Text(fcst3.condition.toString()),
-                                Row(
-                                  children: <Widget>[
-                                    Text(fcst3.tmin.toString()+'°', style: TextStyle(color: Colors.lightBlueAccent)),
-                                    Text('| '),
-                                    Text(fcst3.tmax.toString()+'°', style: TextStyle(color: Colors.redAccent)),
-                                  ],
-                                ),
-                                IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70), onPressed: null)
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(height: 20, child: Text('')),
-                      Container(
-                        child: Column(
+                  ),
+                  Container(height: 30, child: Text('')),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('🔎 DONNÉES ACTUELLES', style: TextStyle(fontWeight: FontWeight.w500)),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              padding: EdgeInsets.all(10),
-                              decoration: new BoxDecoration(
-                                  color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
-                                  borderRadius: BorderRadius.only(
-                                      topLeft:  Radius.circular(5.0),
-                                      topRight: Radius.circular(5.0),
-                                      bottomLeft: Radius.circular(5.0),
-                                      bottomRight: Radius.circular(5.0))
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            Text(cond.condition.toString(), style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 20)),
+                            Row(children: <Widget>[
+                              Text(cond.tmp.toString() + '°', style: TextStyle(
+                                  fontSize: 100.0,
+                                  fontWeight: FontWeight.w300)),
+                              Text('C', style: TextStyle(fontSize: 30.0))
+                            ],),
+                            Row(children: <Widget>[
+                              Icon(FontAwesomeIcons.arrowUp, size: 15,
+                                color: Colors.red,),
+                              Text(fcst0.tmax.toString() + '°',
+                                style: TextStyle(color: Colors.red),),
+                              Icon(FontAwesomeIcons.arrowDown, size: 15,
+                                color: Colors.lightBlueAccent,),
+                              Text(fcst0.tmin.toString() + '°',
+                                style: TextStyle(
+                                    color: Colors.lightBlueAccent),),
+                              Row(
                                 children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Text("Précipitation"),
-                                      Container(height: 5, child: Text(' ')),
-                                      precipitationIcon,
-                                      Container(height: 10, child: Text(' ')),
-                                      Text(currentHourlyData.APCPsfc.toString()+"mm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 100.0,
-                                    width: 0.5,
-                                    color: Colors.white30,
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text("Humidité"),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("☔ ", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 30)),
-                                      Container(height: 10, child: Text(' ')),
-                                      Text(cond.humidity.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 100.0,
-                                    width: 0.5,
-                                    color: Colors.white30,
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text("Altitude"),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("⛰️", style: TextStyle(fontSize: 30)),
-                                      Container(height: 10, child: Text(' ')),
-                                      Text(ci.elevation.toString()+"m", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 100.0,
-                                    width: 0.5,
-                                    color: Colors.white30,
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text("Orage"),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text('🌩', style: TextStyle(fontSize: 30)),
-                                      Container(height: 10, child: Text(' ')),
-                                      Text(currentHourlyData.KINDEX.toString()+"%", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200))
-                                    ],
-                                  )
+                                  Text('  '),
+                                  Text('On a la sensation de : ',
+                                      style: TextStyle(fontSize: 15,
+                                          fontWeight: FontWeight.w300)),
+                                  Text(currentHourlyData.WNDCHILL2m.toString() +
+                                      '°', style: TextStyle(fontSize: 15,
+                                      fontWeight: FontWeight.w300)),
+
                                 ],
-                              ),
-                            )
+                              )
+                            ],)
                           ],
                         ),
+                        Image.network(cond.iconBig.toString())
+                      ],
+                    ),
+                  ),
+                  Container(height: 20, child: Text('')),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      height: 130,
+                      decoration: new BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          //new Color.fromRGBO(255, 0, 0, 0.0),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              topRight: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0),
+                              bottomRight: Radius.circular(5.0))
                       ),
-                      Container(height: 20, child: Text('')),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('💨 VENT & PRESSION EN CE MOMENT', style: TextStyle(fontWeight: FontWeight.w500)),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              padding: EdgeInsets.all(10),
-                              decoration: new BoxDecoration(
-                                  color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
-                                  borderRadius: BorderRadius.only(
-                                      topLeft:  Radius.circular(5.0),
-                                      topRight: Radius.circular(5.0),
-                                      bottomLeft: Radius.circular(5.0),
-                                      bottomRight: Radius.circular(5.0))
+                      padding: EdgeInsets.all(5),
+                      child: ListView(
+                        // This next line does the trick.
+                        scrollDirection: Axis.horizontal,
+                        children: containers(),
+                      )
+                  ),
+                  Container(height: 20, child: Text('')),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('📅 PRÉVISIONS QUOTIDIENNES',
+                            style: TextStyle(fontWeight: FontWeight.w500)),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          padding: EdgeInsets.all(10),
+                          decoration: new BoxDecoration(
+                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5.0),
+                                  topRight: Radius.circular(5.0),
+                                  bottomLeft: Radius.circular(5.0),
+                                  bottomRight: Radius.circular(5.0))
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Text(fcst0.condition.toString() + " de " +
+                                  fcst0.dayLong.toString() + " jusqu'à " +
+                                  fcst1.dayLong.toString() + " matin",
+                                  style: TextStyle(fontSize: 17,
+                                      fontWeight: FontWeight.w200),
+                                  textAlign: TextAlign.center),
+                              Container(height: 5, child: Text('')),
+                              Container(
+                                height: 1,
+                                width: 400,
+                                color: Colors.white30,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              Container(height: 5, child: Text('')),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
                                 children: <Widget>[
-                                  Text("🌬", style: TextStyle(fontSize: 100 )),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.compass, size: 17, color: Colors.yellow),
-                                          Text("  " + cond.windDir.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Orientation du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-
-
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.locationArrow, size: 15, color: Colors.lightGreen),
-                                          Text("  "+currentHourlyData.WNDDIR10m.toString()+"°", style: TextStyle(fontWeight: FontWeight.bold)), // UPDATE windDir10m
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Direction du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-
-                                      Row(
-                                        children: <Widget>[
-                                          Text("🚩", style: TextStyle(fontSize: 15)),
-                                          Text(" "+ cond.windGust.toString() + ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Vitesse du vent)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.exclamationCircle, size: 15, color: Colors.orangeAccent),
-                                          Text('  '+cond.windSpeed.toString()+'%', style: TextStyle(fontWeight: FontWeight.bold))
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Vent +10km/h)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text('Pression'),
-                                      Container(height: 5, child: Text(' ')),
-                                      Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white,),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text(cond.pressure.toString()+' hPA', style: TextStyle(fontWeight: FontWeight.w200)),
-                                      Text('('+(cond.pressure*1.013).floor().toString()+' Bar)', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(height: 20, child: Text('')),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('☀ SOLEIL', style: TextStyle(fontWeight: FontWeight.w500)),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              padding: EdgeInsets.all(10),
-                              decoration: new BoxDecoration(
-                                  color: Color.fromRGBO(0, 0, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),
-                                  borderRadius: BorderRadius.only(
-                                      topLeft:  Radius.circular(5.0),
-                                      topRight: Radius.circular(5.0),
-                                      bottomLeft: Radius.circular(5.0),
-                                      bottomRight: Radius.circular(5.0))
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          Text("🌅 "+ ci.sunrise.toString(), style: TextStyle(fontWeight: FontWeight.bold)), //windDir10m
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Heure du levé)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-                                      Row(
-                                        children: <Widget>[
-                                          Text("🌇 "+ ci.sunset.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Heure du couché)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                      Container(height: 10, child: Text(' ')),
-                                      Row(
-                                        children: <Widget>[
-                                          Text("⌛ "+diff, style: TextStyle(fontWeight: FontWeight.bold)),
-                                        ],
-                                      ),
-                                      Container(height: 5, child: Text(' ')),
-                                      Text("(Temps restant)", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10)),
-                                    ]
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                    height: 100.0,
-                                    width: 0.5,
-                                    color: Colors.white30,
-                                  ),
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 240,
-                                        height:100,
-                                        decoration: new BoxDecoration(
-                                            color: Color.fromRGBO(255, 200, 0, 0.1), //new Color.fromRGBO(255, 0, 0, 0.0),,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft:  Radius.circular(100.0),
-                                                topRight: Radius.circular(100.0))
-                                        ),
-                                        child: Row(
+                                        width: 50,
+                                        child: Column(
                                           children: <Widget>[
-                                            Container(
-                                              height: 100,
-                                              width: 120,
-                                              decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(255, 200, 0, 0.6),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:  Radius.circular(100.0),
-                                                  topRight: Radius.circular(0.0))
-                                              ),
-                                            ),
+                                            Text(fcst0.dayShort.toString()),
+                                            Text(fcst0.dateCalendar.toString())
                                           ],
-                                        )
-                                      ),
+                                        ),
+                                      )
                                     ],
-                                  )
+                                  ),
+                                  Image.network(fcst0.icon.toString()),
+                                  Text(fcst0.condition.toString()),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(fcst0.tmin.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.lightBlueAccent)),
+                                      Text('| '),
+                                      Text(fcst0.tmax.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.redAccent)),
+                                    ],
+                                  ),
+                                  IconButton(icon: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white70), onPressed: test)
                                 ],
                               ),
-                            ),
-                          ],
+                              Container(
+                                height: 0.25,
+                                width: 400,
+                                color: Colors.white30,
+                                margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                              ),
+                              Row( //Soucis d'espace fixé
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Text(fcst1.dayShort.toString()),
+                                      Text(fcst1.dateCalendar.toString())
+                                    ],
+                                  ),
+                                  Image.network(fcst1.icon.toString()),
+                                  Text(fcst1.condition.toString()),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(fcst1.tmin.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.lightBlueAccent)),
+                                      Text('| '),
+                                      Text(fcst1.tmax.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.redAccent)),
+                                    ],
+                                  ),
+                                  IconButton(icon: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white70), onPressed: null)
+                                ],
+                              ),
+                              Container(
+                                height: 0.25,
+                                width: 400,
+                                color: Colors.white30,
+                                margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Text(fcst2.dayShort.toString()),
+                                      Text(fcst2.dateCalendar.toString())
+                                    ],
+                                  ),
+                                  Image.network(fcst2.icon.toString()),
+                                  Text(fcst2.condition.toString()),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(fcst2.tmin.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.lightBlueAccent)),
+                                      Text('| '),
+                                      Text(fcst2.tmax.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.redAccent)),
+                                    ],
+                                  ),
+                                  IconButton(icon: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white70), onPressed: null),
+                                ],
+                              ),
+                              Container(
+                                height: 0.25,
+                                width: 400,
+                                color: Colors.white30,
+                                margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceAround,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Text(fcst3.dayShort.toString()),
+                                      Text(fcst3.dateCalendar.toString())
+                                    ],
+                                  ),
+                                  Image.network(fcst3.icon.toString()),
+                                  Text(fcst3.condition.toString()),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(fcst3.tmin.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.lightBlueAccent)),
+                                      Text('| '),
+                                      Text(fcst3.tmax.toString() + '°',
+                                          style: TextStyle(
+                                              color: Colors.redAccent)),
+                                    ],
+                                  ),
+                                  IconButton(icon: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white70), onPressed: null)
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(height: 40, child: Text('')),
-                    ],
+                        Container(height: 20, child: Text('')),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('🔎 DONNÉES ACTUELLES', style: TextStyle(
+                                  fontWeight: FontWeight.w500)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5.0),
+                                        topRight: Radius.circular(5.0),
+                                        bottomLeft: Radius.circular(5.0),
+                                        bottomRight: Radius.circular(5.0))
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Précipitation"),
+                                        Container(height: 5, child: Text(' ')),
+                                        precipitationIcon,
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(currentHourlyData.APCPsfc
+                                            .toString() + "mm",
+                                            style: TextStyle(fontSize: 16,
+                                                fontWeight: FontWeight.w200))
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Humidité"),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("☔ ", style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(cond.humidity.toString() + "%",
+                                            style: TextStyle(fontSize: 16,
+                                                fontWeight: FontWeight.w200))
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Altitude"),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("⛰️",
+                                            style: TextStyle(fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(ci.elevation.toString() + "m",
+                                            style: TextStyle(fontSize: 16,
+                                                fontWeight: FontWeight.w200))
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Orage"),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text('🌩',
+                                            style: TextStyle(fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(currentHourlyData.KINDEX
+                                            .toString() + "%", style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w200))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(height: 20, child: Text('')),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('💨 VENT & PRESSION EN CE MOMENT',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5.0),
+                                        topRight: Radius.circular(5.0),
+                                        bottomLeft: Radius.circular(5.0),
+                                        bottomRight: Radius.circular(5.0))
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  children: <Widget>[
+                                    Text("🌬", style: TextStyle(fontSize: 100)),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceBetween,
+                                      children: <Widget>[
+
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(FontAwesomeIcons.compass,
+                                                size: 17, color: Colors.yellow),
+                                            Text("  " + cond.windDir.toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .bold)),
+                                          ],
+                                        ),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("(Orientation du vent)",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w200,
+                                                fontSize: 10)),
+                                        Container(height: 10, child: Text(' ')),
+
+
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(FontAwesomeIcons.locationArrow,
+                                                size: 15,
+                                                color: Colors.lightGreen),
+                                            Text("  " +
+                                                currentHourlyData.WNDDIR10m
+                                                    .toString() + "°",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .bold)),
+                                            // UPDATE windDir10m
+                                          ],
+                                        ),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("(Direction du vent)",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w200,
+                                                fontSize: 10)),
+                                        Container(height: 10, child: Text(' ')),
+
+                                        Row(
+                                          children: <Widget>[
+                                            Text("🚩",
+                                                style: TextStyle(fontSize: 15)),
+                                            Text(
+                                                " " + cond.windGust.toString() +
+                                                    ' km/h', style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("(Vitesse du vent)",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w200,
+                                                fontSize: 10)),
+                                        Container(height: 10, child: Text(' ')),
+
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(FontAwesomeIcons
+                                                .exclamationCircle, size: 15,
+                                                color: Colors.orangeAccent),
+                                            Text('  ' +
+                                                cond.windSpeed.toString() + '%',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .bold))
+                                          ],
+                                        ),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("(Vent +10km/h)", style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 10)),
+                                        Container(height: 10, child: Text(' ')),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text('Pression'),
+                                        Container(height: 5, child: Text(' ')),
+                                        Icon(FontAwesomeIcons.tachometerAlt,
+                                          color: Colors.white,),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text(cond.pressure.toString() + ' hPA',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w200)),
+                                        Text('(' + (cond.pressure * 1.013)
+                                            .floor()
+                                            .toString() + ' Bar)',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w200,
+                                                fontSize: 12))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(height: 20, child: Text('')),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('☀ SOLEIL', style: TextStyle(
+                                  fontWeight: FontWeight.w500)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5.0),
+                                        topRight: Radius.circular(5.0),
+                                        bottomLeft: Radius.circular(5.0),
+                                        bottomRight: Radius.circular(5.0))
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Text(
+                                                  "🌅 " + ci.sunrise.toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight
+                                                          .bold)), //windDir10m
+                                            ],
+                                          ),
+                                          Container(
+                                              height: 5, child: Text(' ')),
+                                          Text("(Heure du levé)",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w200,
+                                                  fontSize: 10)),
+                                          Container(
+                                              height: 10, child: Text(' ')),
+                                          Row(
+                                            children: <Widget>[
+                                              Text("🌇 " + ci.sunset.toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight
+                                                          .bold)),
+                                            ],
+                                          ),
+                                          Container(
+                                              height: 5, child: Text(' ')),
+                                          Text("(Heure du couché)",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w200,
+                                                  fontSize: 10)),
+                                          Container(
+                                              height: 10, child: Text(' ')),
+                                          Row(
+                                            children: <Widget>[
+                                              Text("⌛ " + diff,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight
+                                                          .bold)),
+                                            ],
+                                          ),
+                                          Container(
+                                              height: 5, child: Text(' ')),
+                                          Text("(Temps restant)",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w200,
+                                                  fontSize: 10)),
+                                        ]
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                            width: 240,
+                                            height: 100,
+                                            decoration: new BoxDecoration(
+                                                color: Color.fromRGBO(
+                                                    255, 200, 0, 0.1),
+                                                //new Color.fromRGBO(255, 0, 0, 0.0),,
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(
+                                                        100.0),
+                                                    topRight: Radius.circular(
+                                                        100.0))
+                                            ),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 100,
+                                                  width: 120,
+                                                  decoration: new BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          255, 200, 0, 0.6),
+                                                      borderRadius: BorderRadius
+                                                          .only(
+                                                          topLeft: Radius
+                                                              .circular(100.0),
+                                                          topRight: Radius
+                                                              .circular(0.0))
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(height: 40, child: Text('')),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
-
-/*
-hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
-
-//HOUR
-fcstDay0.dayShort.toString();
-fcstDay0.date.toString().replaceFirst(".", "/").substring(0,5); // 08/01
-
-hourlyData.ICON.toString();
-
-hourlyData.TMP2m.toString();
-hourlyData.DPT2m.toString(); //Temp point rosée
-hourlyData.WNDCHILL2m.toString(); //Temp ressentie
-hourlyData.CONDITION.toString();
-hourlyData.APCPsfc.toString(); //Précipitation
-hourlyData.RH2m.toString(); // Humidité
-hourlyData.WNDGUST10m.toString(); // Vitesse vent 10km +
-hourlyData.PRMSL.toString(); // Pression
-hourlyData.ISSNOW.toString() // Savoir s'il pleut ou neige
-
-
-
-
-hourlyData.
- */
