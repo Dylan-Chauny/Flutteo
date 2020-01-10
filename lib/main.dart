@@ -176,14 +176,20 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Donnée quotidiennes'),
+            title: Text('Données pour le '+fcst0.dayLong.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/")),
             elevation: 0.0,
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: Colors.transparent,
           ),
           body: Center(
             child: FlatButton(
               child: Container(
-                child: ListView(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                    fit: BoxFit.cover,
+                    ),
+                ),
+              child: ListView(
                   // This next line does the trick.
                   children: containers_hour(),
                 ),
@@ -219,9 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (hourData.substring(0, 1) == "0")
           hourData = hourData.substring(1);
 
-        hourlyData = hourly.fromJson(
-            jsonData['fcst_day_0']['hourly_data'][hourData.toString()
-                .replaceAll(":", "H")]);
+        hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
         temperature = hourlyData.TMP2m;
       }
       else {
@@ -237,14 +241,12 @@ class _MyHomePageState extends State<MyHomePage> {
             hourForData = indice.toString() + "H00";
           }
           hourlyData = hourly.fromJson(
-              jsonData['fcst_day_1']['hourly_data'][hourForData.toString()
-                  .replaceAll(":", "H")]);
+              jsonData['fcst_day_1']['hourly_data'][hourForData.toString().replaceAll(":", "H")]);
         }
         else {
           hourForData =
               hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
-          hourlyData = hourly.fromJson(
-              jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
+          hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
         }
       }
 
@@ -300,40 +302,215 @@ class _MyHomePageState extends State<MyHomePage> {
 
       hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourStart]);
 
-      var typePrecipitation =   hourlyData.ISSNOW == 1 ? "Neige" : "Pluie";
+      l.add(
+        Container(
+          height: 210,
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 10, 5, 10),
+          decoration: new BoxDecoration(
+              color: Color.fromRGBO(0, 0, 0, 0.1),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Column (
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                        width: 160,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Image.network(hourlyData.ICON.toString(), height: 30),
+                            ),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(hourlyData.CONDITION.toString(), style: TextStyle(fontWeight: FontWeight.w300))
+                            ),
+                          ],
+                        ),
+                      )
 
-      l.add(Container(
-        margin: EdgeInsets.fromLTRB(8, 30, 8, 0),
-        width: 60.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(hourStart.toString()),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Image.network(hourlyData.ICON.toString(), height: 150)
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Text(hourlyData.TMP2m.toString()+"°"),
-                Text(hourlyData.CONDITION.toString(), style: TextStyle(fontWeight: FontWeight.w300),),
-                Text("Température ressentie: "+hourlyData.WNDCHILL2m.toString()),
-                Text("Point rosée: "+hourlyData.DPT2m.toString()),
-                Text("Précipitation: "+hourlyData.APCPsfc.toString()),
-                Text("Humidité: "+hourlyData.RH2m.toString()),
-                Text("Vent +10km/h: "+hourlyData.WNDGUST10m.toString()),
-                Text("Pression: "+hourlyData.PRMSL.toString()),
-                Text("Type de précipitation: "+typePrecipitation.toString()),
-              ],
-            ),
-          ],
+                    ],
+                  ),
+                  Container(height: 5, child: Text('')),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 160,
+                        padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                        alignment: Alignment.bottomLeft,
+                        child: Row(
+                          children: <Widget>[
+                            Text(hourlyData.TMP2m.round().toString()+"°", style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400)),
+                            Text("C", style: TextStyle(fontSize: 25))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Container(
+                    width: 160,
+                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    alignment: Alignment.bottomLeft,
+                    child: Row (
+                      children: <Widget>[
+                        Text("Ressentie: "+hourlyData.WNDCHILL2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200)),
+                      ],
+                    ),
+                  ),
+                  Container(height: 5, child: Text('')),
+                  Container(
+                    width: 160,
+                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      children: <Widget>[
+                        Text("Point de rosée: "+hourlyData.DPT2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200),)
+                      ],
+                    )
+                  ),
+                  Container(height: 30, child: Text('')),
+                  Container(
+                    width: 160,
+                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      children: <Widget>[
+                        Text(hourStart.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.blueAccent))
+                      ],
+                    )
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Container(
+                    height: 180,
+                    width: 0.25,
+                    color: Colors.white30,
+                  )
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Row (
+                    children: <Widget>[
+                      Container(
+                        decoration: new BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25.0),
+                            topRight: Radius.circular(25.0),
+                            bottomLeft: Radius.circular(25.0),
+                            bottomRight: Radius.circular(25.0))
+                        ),
+                        width: 100,
+                        height: 90,
+                        child: Column (
+                          children: <Widget>[
+                            Container(height: 8),
+                            Text('Précipitation', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                            Container(height: 5),
+                            precipitationIcon,
+                            Container(height: 5),
+                            Text(hourlyData.APCPsfc.toString()+"mm", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
+                          ],
+                        ),
+                      ),
+                      Container(width: 10, child: Text('')),
+                      Container(
+                        decoration: new BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0))
+                        ),
+                        width: 80,
+                        height: 90,
+                        child: Column (
+                          children: <Widget>[
+                            Container(height: 8),
+                            Text('Humidité', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                            Container(height: 5),
+                            Text("☔", style: TextStyle(fontSize: 30)),
+                            Container(height: 5),
+                            Text(hourlyData.RH2m.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)), //Humidité
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(height: 10, child: Text('')),
+                  Row (
+                    children: <Widget>[
+                      Container(
+                        decoration: new BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0))
+                        ),
+                        width: 100,
+                        height: 90,
+                        child: Column (
+                            children: <Widget>[
+                              Container(height: 8),
+                              Text('Vitesse vent', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                              Container(height: 5),
+                              Icon(FontAwesomeIcons
+                                  .wind, size: 30,
+                                  color: Colors.lightGreen),
+                              //Text("🚩", style: TextStyle(fontSize: 30)),
+                              Container(height: 5),
+                              Text(hourlyData.WNDGUST10m.toString()+"km/h", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
+                            ],
+                          ),
+                      ),
+                      Container(width: 10, child: Text('')),
+                      Container(
+                        decoration: new BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0))
+                        ),
+                        width: 80,
+                        height: 90,
+                        child: Column (
+                            children: <Widget>[ //
+                              Container(height: 8),
+                              Text('Orage', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                              Container(height: 5),
+                              Text("🌩", style: TextStyle(fontSize: 30)),
+                              Container(height: 5),
+                              Text(hourlyData.KINDEX.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)), //Orage
+                            ],
+                          ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ));
+      );
+
     }
     return l;
   }
@@ -425,10 +602,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color.fromRGBO(0, 0, 0, 0.1),
                           //new Color.fromRGBO(255, 0, 0, 0.0),
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5.0),
-                              topRight: Radius.circular(5.0),
-                              bottomLeft: Radius.circular(5.0),
-                              bottomRight: Radius.circular(5.0))
+                              topLeft: Radius.circular(10.0),
+                              topRight: Radius.circular(10.0),
+                              bottomLeft: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0))
                       ),
                       padding: EdgeInsets.all(5),
                       child: ListView(
@@ -452,10 +629,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Color.fromRGBO(0, 0, 0, 0.1),
                               //new Color.fromRGBO(255, 0, 0, 0.0),
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(5.0),
-                                  topRight: Radius.circular(5.0),
-                                  bottomLeft: Radius.circular(5.0),
-                                  bottomRight: Radius.circular(5.0))
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                  bottomLeft: Radius.circular(10.0),
+                                  bottomRight: Radius.circular(10.0))
                           ),
                           child: Column(
                             children: <Widget>[
@@ -622,10 +799,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Color.fromRGBO(0, 0, 0, 0.1),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(5.0),
-                                        topRight: Radius.circular(5.0),
-                                        bottomLeft: Radius.circular(5.0),
-                                        bottomRight: Radius.circular(5.0))
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment
@@ -652,9 +829,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       children: <Widget>[
                                         Text("Humidité"),
                                         Container(height: 5, child: Text(' ')),
-                                        Text("☔ ", style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 30)),
+                                        Text("☔ ", style: TextStyle(fontWeight: FontWeight.w300,fontSize: 30)),
                                         Container(height: 10, child: Text(' ')),
                                         Text(cond.humidity.toString() + "%",
                                             style: TextStyle(fontSize: 16,
@@ -718,10 +893,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Color.fromRGBO(0, 0, 0, 0.1),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(5.0),
-                                        topRight: Radius.circular(5.0),
-                                        bottomLeft: Radius.circular(5.0),
-                                        bottomRight: Radius.circular(5.0))
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment
@@ -757,7 +932,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           children: <Widget>[
                                             Icon(FontAwesomeIcons.locationArrow,
                                                 size: 15,
-                                                color: Colors.lightGreen),
+                                                color: Colors.lightBlueAccent),
                                             Text("  " +
                                                 currentHourlyData.WNDDIR10m
                                                     .toString() + "°",
@@ -794,17 +969,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Row(
                                           children: <Widget>[
                                             Icon(FontAwesomeIcons
-                                                .exclamationCircle, size: 15,
-                                                color: Colors.orangeAccent),
+                                                .wind, size: 15,
+                                                color: Colors.lightGreen),
                                             Text('  ' +
-                                                cond.windSpeed.toString() + '%',
+                                                cond.windSpeed.toString() + ' km/h',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight
                                                         .bold))
                                           ],
                                         ),
                                         Container(height: 5, child: Text(' ')),
-                                        Text("(Vent +10km/h)", style: TextStyle(
+                                        Text("(Vent en rafale)", style: TextStyle(
                                             fontWeight: FontWeight.w200,
                                             fontSize: 10)),
                                         Container(height: 10, child: Text(' ')),
@@ -849,10 +1024,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Color.fromRGBO(0, 0, 0, 0.1),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(5.0),
-                                        topRight: Radius.circular(5.0),
-                                        bottomLeft: Radius.circular(5.0),
-                                        bottomRight: Radius.circular(5.0))
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
