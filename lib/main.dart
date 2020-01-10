@@ -409,7 +409,7 @@ class _MyHomePageState extends State<MyHomePage> {
       l.add(
         Container(
           height: 210,
-          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
           padding: EdgeInsets.fromLTRB(0, 10, 5, 10),
           decoration: new BoxDecoration(
               color: Color.fromRGBO(0, 0, 0, 0.1),
