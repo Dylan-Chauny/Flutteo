@@ -762,7 +762,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         width: 35,
                                         child: Column(
                                           children: <Widget>[
-                                            Text(fcst0.dayShort.toString()),
+                                            Text("Ajd."),
                                             Text(fcst0.dateCalendar.toString())
                                           ],
                                         ),
