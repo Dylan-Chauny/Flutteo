@@ -91,16 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
       hourConcerned = cond.hour.toString().replaceAll(":", "H");
 
-      //Cas de Minuit:
-      hourConcerned = hourConcerned.replaceAll("00H", "0H");
-
-      //Cas d'heure avant 10H
       if (hourConcerned.toString().substring(0, 1) == "0")
         hourConcerned = hourConcerned.toString().substring(1);
 
 
-      currentHourlyData =
-          hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
+      currentHourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourConcerned]);
 
       var isSnow = currentHourlyData.ISSNOW;
 
@@ -217,12 +212,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
       if (i == 0) {
-        hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
-        hour = hourStart + ":00";
+        {
+          hourStart = cond.hour.toString().replaceAll(":", "").substring(0, 2);
+          hour = hourStart + ":00";
+        }
+
 
         var hourData = hour.toString().replaceAll("00:", "0:");
 
-        if (hourData.substring(0, 1) == "0")
+        if (hourData.substring(0, 1) == "0" && hourData.substring(0,2) != "0:")
           hourData = hourData.substring(1);
 
         hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourData.toString().replaceAll(":", "H")]);
@@ -244,8 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
               jsonData['fcst_day_1']['hourly_data'][hourForData.toString().replaceAll(":", "H")]);
         }
         else {
-          hourForData =
-              hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
+          hourForData = hour.toString().replaceAll(":", "H").replaceFirst("24", "0");
           hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourForData.toString()]);
         }
       }
