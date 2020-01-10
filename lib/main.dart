@@ -166,27 +166,134 @@ class _MyHomePageState extends State<MyHomePage> {
     loadJson();
   }
 
-  void test() {
+  void popup0() {
     Navigator.push(context, MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Données pour le '+fcst0.dayLong.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/")),
+            title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/")),
             elevation: 0.0,
             backgroundColor: Colors.transparent,
           ),
           body: Center(
             child: FlatButton(
               child: Container(
+                /*
                 decoration: BoxDecoration(
                     image: DecorationImage(
                     image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
                     fit: BoxFit.cover,
                     ),
                 ),
+                */
               child: ListView(
                   // This next line does the trick.
-                  children: containers_hour(),
+                  children: containers_hour(0),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+      },
+    ));
+  }
+
+  void popup1() {
+    Navigator.push(context, MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/")),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: Center(
+            child: FlatButton(
+              child: Container(
+                /*
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                 */
+                child: ListView(
+                  // This next line does the trick.
+                  children: containers_hour(1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+      },
+    ));
+  }
+
+  void popup2() {
+    Navigator.push(context, MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Données pour le '+fcst2.dayLong.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/")),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: Center(
+            child: FlatButton(
+              child: Container(
+                /*
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                */
+                child: ListView(
+                  // This next line does the trick.
+                  children: containers_hour(2),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+      },
+    ));
+  }
+
+  void popup3() {
+    Navigator.push(context, MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Données pour le '+fcst3.dayLong.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/")),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: Center(
+            child: FlatButton(
+              child: Container(
+                /*
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+               */
+                child: ListView(
+                  // This next line does the trick.
+                  children: containers_hour(3),
                 ),
               ),
               onPressed: () {
@@ -290,14 +397,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return l;
   }
 
-  List<Widget> containers_hour() {
+  List<Widget> containers_hour(day) {
     List<Widget> l = new List();
 
     for (int i = 0; i < 24; i++) {
       var hourStart = i.toString() + "H00";
       var hourlyData;
 
-      hourlyData = hourly.fromJson(jsonData['fcst_day_0']['hourly_data'][hourStart]);
+      hourlyData = hourly.fromJson(jsonData['fcst_day_'+day.toString()]['hourly_data'][hourStart]);
 
       l.add(
         Container(
@@ -347,7 +454,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         alignment: Alignment.bottomLeft,
                         child: Row(
                           children: <Widget>[
-                            Text(hourlyData.TMP2m.round().toString()+"°", style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400)),
+                            Text(hourlyData.TMP2m.toString()+"°", style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400)),
                             Text("C", style: TextStyle(fontSize: 25))
                           ],
                         ),
@@ -647,13 +754,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               Container(height: 5, child: Text('')),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 50,
+                                        width: 35,
                                         child: Column(
                                           children: <Widget>[
                                             Text(fcst0.dayShort.toString()),
@@ -663,8 +769,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       )
                                     ],
                                   ),
-                                  Image.network(fcst0.icon.toString()),
-                                  Text(fcst0.condition.toString()),
+                                  Container(width: 25),
+                                  Container(
+                                    width: 50,
+                                    child: Image.network(fcst0.icon.toString())
+                                  ),
+                                  Container(width: 20),
+                                  Container(
+                                    width: 130,
+                                    child: Text(fcst0.condition.toString())
+                                  ),
+                                  Container(width: 10),
                                   Row(
                                     children: <Widget>[
                                       Text(fcst0.tmin.toString() + '°',
@@ -677,7 +792,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ],
                                   ),
                                   IconButton(icon: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white70), onPressed: test)
+                                      color: Colors.white70), onPressed: popup0)
                                 ],
                               ),
                               Container(
@@ -686,18 +801,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: Colors.white30,
                                 margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                               ),
-                              Row( //Soucis d'espace fixé
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
-                                      Text(fcst1.dayShort.toString()),
-                                      Text(fcst1.dateCalendar.toString())
+                                      Container(
+                                        width: 35,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(fcst1.dayShort.toString()),
+                                            Text(fcst1.dateCalendar.toString())
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  Image.network(fcst1.icon.toString()),
-                                  Text(fcst1.condition.toString()),
+                                  Container(width: 25),
+                                  Container(
+                                      width: 50,
+                                      child: Image.network(fcst1.icon.toString())
+                                  ),
+                                  Container(width: 20),
+                                  Container(
+                                      width: 130,
+                                      child: Text(fcst1.condition.toString())
+                                  ),
+                                  Container(width: 10),
                                   Row(
                                     children: <Widget>[
                                       Text(fcst1.tmin.toString() + '°',
@@ -710,7 +840,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ],
                                   ),
                                   IconButton(icon: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white70), onPressed: null)
+                                      color: Colors.white70), onPressed: popup1)
                                 ],
                               ),
                               Container(
@@ -720,17 +850,32 @@ class _MyHomePageState extends State<MyHomePage> {
                                 margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
-                                      Text(fcst2.dayShort.toString()),
-                                      Text(fcst2.dateCalendar.toString())
+                                      Container(
+                                        width: 35,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(fcst2.dayShort.toString()),
+                                            Text(fcst2.dateCalendar.toString())
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  Image.network(fcst2.icon.toString()),
-                                  Text(fcst2.condition.toString()),
+                                  Container(width: 25),
+                                  Container(
+                                      width: 50,
+                                      child: Image.network(fcst2.icon.toString())
+                                  ),
+                                  Container(width: 20),
+                                  Container(
+                                      width: 130,
+                                      child: Text(fcst2.condition.toString())
+                                  ),
+                                  Container(width: 10),
                                   Row(
                                     children: <Widget>[
                                       Text(fcst2.tmin.toString() + '°',
@@ -743,7 +888,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ],
                                   ),
                                   IconButton(icon: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white70), onPressed: null),
+                                      color: Colors.white70), onPressed: popup2)
                                 ],
                               ),
                               Container(
@@ -753,32 +898,47 @@ class _MyHomePageState extends State<MyHomePage> {
                                 margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
-                                      Text(fcst3.dayShort.toString()),
-                                      Text(fcst3.dateCalendar.toString())
+                                      Container(
+                                        width: 35,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(fcst3.dayShort.toString()),
+                                            Text(fcst3.dateCalendar.toString())
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  Image.network(fcst3.icon.toString()),
-                                  Text(fcst3.condition.toString()),
+                                  Container(width: 25),
+                                  Container(
+                                      width: 50,
+                                      child: Image.network(fcst3.icon.toString())
+                                  ),
+                                  Container(width: 20),
+                                  Container(
+                                      width: 130,
+                                      child: Text(fcst3.condition.toString())
+                                  ),
+                                  Container(width: 10),
                                   Row(
                                     children: <Widget>[
-                                      Text(fcst3.tmin.toString() + '°',
+                                      Text(fcst0.tmin.toString() + '°',
                                           style: TextStyle(
                                               color: Colors.lightBlueAccent)),
                                       Text('| '),
-                                      Text(fcst3.tmax.toString() + '°',
+                                      Text(fcst0.tmax.toString() + '°',
                                           style: TextStyle(
                                               color: Colors.redAccent)),
                                     ],
                                   ),
                                   IconButton(icon: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white70), onPressed: null)
+                                      color: Colors.white70), onPressed: popup3)
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
