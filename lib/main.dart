@@ -114,11 +114,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
       var checkHoure = diff.split(':');
       diffHour = int.parse(checkHoure[0]);
+      var diffMin = int.parse(checkHoure[1]);
 
+      //MODIF ICI
       var checkNegativeValue = diff.toString().substring(0, 1);
 
       if (diffHour < 10)
         diff = "0" + diff.toString();
+
+      if (diffMin < 10)
+        diff = diff.toString().replaceFirst(':', ":0");
 
       if (checkNegativeValue == "-")
         diff = "00:00";
@@ -170,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
             elevation: 0.0,
             flexibleSpace: Image(
-              image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+              //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
+              image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
               fit: BoxFit.cover,
             ),
             iconTheme: new IconThemeData(
@@ -213,7 +219,8 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
               elevation: 0.0,
               flexibleSpace: Image(
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -256,7 +263,8 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Données pour le '+fcst2.dayShort.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
               elevation: 0.0,
               flexibleSpace: Image(
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -299,7 +307,8 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Données pour le '+fcst3.dayShort.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
               elevation: 0.0,
               flexibleSpace: Image(
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -1000,7 +1009,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 20,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1021,7 +1030,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 90,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1042,7 +1051,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             Container(
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1063,7 +1072,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 80,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1085,7 +1094,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 30,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1105,7 +1114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 90,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1127,7 +1136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 60,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
@@ -1148,7 +1157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               height: 120,
                                               width: 30,
                                               decoration: new BoxDecoration(
-                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(10.0),
