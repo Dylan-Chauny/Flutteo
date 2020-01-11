@@ -128,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
       if (checkNegativeValue == "-")
         diff = "00:00";
 
+      if(diffHour == 0)
+        diff = diff.toString().replaceFirst("00:", "")+" min";
+
       Timer(Duration(seconds: 2), () {
         setState(() {
           loading = true;
@@ -139,16 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  ContainerWidth() {
-    var map = new Map<int, String>();
-
-    for (int k = 0; k < 25; k++) {
-      map[k] = (k * 10).toString();
-    }
-    //12h = 120 width
-
-    print(map);
-  }
 
   @override
   void initState() {
@@ -1428,6 +1421,99 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 child: Container(
                                   width: 400,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceAround,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Text("Sunrise"),
+                                          Text("(levé du soleil)", style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight
+                                                  .w200)),
+                                          Container(height: 5, child: Text(' ')),
+                                          Text("🌅️",
+                                              style: TextStyle(fontSize: 30)),
+                                          Container(height: 10, child: Text(' ')),
+                                          Text(ci.sunrise.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight
+                                                      .w300)),
+                                        ],
+                                      ),
+                                      Container(
+                                        height: 100.0,
+                                        width: 0.5,
+                                        color: Colors.white30,
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text("Sunset"),
+                                          Text("(couché du soleil)", style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight
+                                                  .w200)),
+                                          Container(height: 5, child: Text(' ')),
+                                          Text("🌇️",
+                                              style: TextStyle(fontSize: 30)),
+                                          Container(height: 10, child: Text(' ')),
+                                          Text(ci.sunset.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight
+                                                      .w300)),
+                                        ],
+                                      ),
+                                      Container(
+                                        height: 100.0,
+                                        width: 0.5,
+                                        color: Colors.white30,
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text("Temps restant"),
+                                          Container(height: 5, child: Text(' ')),
+                                          Text("⌛️",
+                                              style: TextStyle(fontSize: 30)),
+                                          Container(height: 10, child: Text(' ')),
+                                          Text(diff,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight
+                                                      .w300)),
+                                          Text("(de soleil pour aujourd'hui)", style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight
+                                                  .w200))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        /*Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('☀ SOLEIL', style: TextStyle(
+                                  fontWeight: FontWeight.w500)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
+                                ),
+                                child: Container(
+                                  width: 400,
                                     child: Row(
                                       children: <Widget>[
                                         Column(
@@ -1528,7 +1614,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ],
                           ),
-                        ),
+                        ),*/
                         Container(height: 40, child: Text('')),
                       ],
                     ),
