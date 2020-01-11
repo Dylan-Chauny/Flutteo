@@ -122,14 +122,15 @@ class _MyHomePageState extends State<MyHomePage> {
       if (diffHour < 10)
         diff = "0" + diff.toString();
 
-      if (diffMin < 10)
-        diff = diff.toString().replaceFirst(':', ":0");
-
       if (checkNegativeValue == "-")
         diff = "00:00";
 
       if(diffHour == 0)
-        diff = diff.toString().replaceFirst("00:", "")+" min";
+        {
+          diff = diff.toString().replaceFirst("00:", "")+" min";
+          if (diffMin < 10)
+            diff = diff.toString().replaceFirst('0', "");
+        }
 
       Timer(Duration(seconds: 2), () {
         setState(() {
