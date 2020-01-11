@@ -12,5 +12,5 @@ class fcstDay {
         icon = json['icon'],
         iconBig = json['icon_big'],
         //hourlyData = hourly.fromJson(json['hourly_data']),
-        dateCalendar = json['date'].toString().substring(1,5).replaceAll(".", "/");
+        dateCalendar = json['date'].toString().substring(0,5).replaceAll(".", "/");
 }

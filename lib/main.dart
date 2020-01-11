@@ -763,7 +763,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 35,
+                                        width: 40,
                                         child: Column(
                                           children: <Widget>[
                                             Text("Ajd."),
@@ -811,7 +811,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 35,
+                                        width: 40,
                                         child: Column(
                                           children: <Widget>[
                                             Text(fcst1.dayShort.toString()),
@@ -860,7 +860,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 35,
+                                        width: 40,
                                         child: Column(
                                           children: <Widget>[
                                             Text(fcst2.dayShort.toString()),
@@ -909,7 +909,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        width: 35,
+                                        width: 40,
                                         child: Column(
                                           children: <Widget>[
                                             Text(fcst3.dayShort.toString()),
