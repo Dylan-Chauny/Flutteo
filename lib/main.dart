@@ -977,7 +977,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white70), onPressed: popup3)
                                 ],
                               ),
-                              Container(height: 20),
+                              Container(
+                                height: 0.25,
+                                width: 400,
+                                color: Colors.white30,
+                                margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                              ),
+                              Container(height: 30),
+                              Container(
+                                child: Text("Comparatif des températures de " +fcst0.dayLong.toString()+ " à " + fcst3.dayLong.toString(),
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w200),
+                                        textAlign: TextAlign.center),
+                              ),
                               Row(
                                 children: <Widget>[
                                   Container(
@@ -997,11 +1010,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[
-                                          Column(children: <Widget>[Container(width: 2,)]),
+                                          Column(children: <Widget>[Container(width: 5,)]),
                                           Column(children: <Widget>[
                                             Container(
                                               height: 20,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1017,12 +1030,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Text(fcst0.tmin.toString()+"°c"),
                                               ),
                                             ),
+                                            Container(height: 5),
+                                            Container(child: Text("Min", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
                                               height: 90,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1037,13 +1052,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst0.tmax.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Max", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
-                                          Column(children: <Widget>[Container(width: 25)]),
+                                          Column(children: <Widget>[Container(width: 10)]),
+
 
                                           Column(children: <Widget>[
                                             Container(
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1058,13 +1076,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst1.tmin.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Min", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
                                               height: 80,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1079,14 +1099,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst1.tmax.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Max", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
-                                          Column(children: <Widget>[Container(width: 25)]),
+                                          Column(children: <Widget>[Container(width: 10)]),
 
                                           Column(children: <Widget>[
                                             Container(
                                               height: 30,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1100,13 +1122,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst2.tmin.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Min", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
                                               height: 90,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1121,14 +1145,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst2.tmax.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Max", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
-                                          Column(children: <Widget>[Container(width: 25)]),
+                                          Column(children: <Widget>[Container(width: 10)]),
 
                                           Column(children: <Widget>[
                                             Container(
                                               height: 60,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1143,13 +1169,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst3.tmin.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Min", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
                                               height: 120,
-                                              width: 30,
+                                              width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
@@ -1164,7 +1192,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 alignment: Alignment.center,
                                                 child: Text(fcst3.tmax.toString()+"°c"),
                                               ),
-                                            )
+                                            ),
+                                            Container(height: 5),
+                                            Container(child: Text("Max", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10)))
                                           ]),
                                         ],
                                       ),
