@@ -11,7 +11,7 @@ import 'dart:convert';
 
 import 'serializer/cityInfo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 var cond;
 var ci;
@@ -30,6 +30,9 @@ var diffHour;
 var hourConcerned;
 var jsonData;
 var precipitationIcon;
+
+var data = [0.0, 5.0, 1.5, 2.0, 8.5];
+//List<double> data = new List();
 
 void main() => runApp(MyApp());
 
@@ -387,9 +390,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text("  "),
                 icon,
                 Text(" ${temperature.toString()}°",
-                    style: TextStyle(fontWeight: FontWeight.w300))
+                    style: TextStyle(fontWeight: FontWeight.w300)),
               ],
-            )
+            ),
           ],
         ),
       ));
@@ -402,6 +405,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (int i = 0; i < 24; i++) {
       var hourStart = i.toString() + "H00";
+      var displayHourStart = hourStart.toString().replaceFirst("H", ":");
       var hourlyData;
 
       hourlyData = hourly.fromJson(jsonData['fcst_day_'+day.toString()]['hourly_data'][hourStart]);
@@ -489,7 +493,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.bottomLeft,
                     child: Row(
                       children: <Widget>[
-                        Text(hourStart.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.blueAccent))
+                        Text(displayHourStart.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.blueAccent))
                       ],
                     )
                   ),
@@ -579,7 +583,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   color: Colors.lightGreen),
                               //Text("🚩", style: TextStyle(fontSize: 30)),
                               Container(height: 5),
-                              Text(hourlyData.WNDGUST10m.toString()+"km/h", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
+                              Text(hourlyData.WNDSPD10m.toString()+" km/h", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
                             ],
                           ),
                       ),
@@ -690,7 +694,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       fontWeight: FontWeight.w300)),
 
                                 ],
-                              )
+                              ),
                             ],)
                           ],
                         ),
@@ -776,7 +780,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Container(width: 20),
                                   Container(
-                                    width: 130,
+                                    width: 115,
                                     child: Text(fcst0.condition.toString())
                                   ),
                                   Container(width: 10),
@@ -791,10 +795,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                               color: Colors.redAccent)),
                                     ],
                                   ),
-                                  IconButton(icon: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white70), onPressed: popup0)
+                                  IconButton(icon: Icon(Icons.arrow_forward_ios, color: Colors.white70), onPressed: popup0),
                                 ],
                               ),
+                              Container(height: 5),
                               Container(
                                 height: 0.25,
                                 width: 400,
@@ -824,7 +828,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Container(width: 20),
                                   Container(
-                                      width: 130,
+                                      width: 115,
                                       child: Text(fcst1.condition.toString())
                                   ),
                                   Container(width: 10),
@@ -843,6 +847,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white70), onPressed: popup1)
                                 ],
                               ),
+                              Container(height: 5),
                               Container(
                                 height: 0.25,
                                 width: 400,
@@ -872,7 +877,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Container(width: 20),
                                   Container(
-                                      width: 130,
+                                      width: 115,
                                       child: Text(fcst2.condition.toString())
                                   ),
                                   Container(width: 10),
@@ -891,6 +896,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white70), onPressed: popup2)
                                 ],
                               ),
+                              Container(height: 5),
                               Container(
                                 height: 0.25,
                                 width: 400,
@@ -920,17 +926,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Container(width: 20),
                                   Container(
-                                      width: 130,
+                                      width: 115,
                                       child: Text(fcst3.condition.toString())
                                   ),
                                   Container(width: 10),
                                   Row(
                                     children: <Widget>[
-                                      Text(fcst0.tmin.toString() + '°',
+                                      Text(fcst3.tmin.toString() + '°',
                                           style: TextStyle(
                                               color: Colors.lightBlueAccent)),
                                       Text('| '),
-                                      Text(fcst0.tmax.toString() + '°',
+                                      Text(fcst3.tmax.toString() + '°',
                                           style: TextStyle(
                                               color: Colors.redAccent)),
                                     ],
@@ -938,6 +944,206 @@ class _MyHomePageState extends State<MyHomePage> {
                                   IconButton(icon: Icon(Icons.arrow_forward_ios,
                                       color: Colors.white70), onPressed: popup3)
                                 ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(height: 20, child: Text('')),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              //temp * 10 + 20,
+                              Text('🌡 EVOLUTION DES TEMPERATURES', style: TextStyle(
+                                  fontWeight: FontWeight.w500)),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
+                                ),
+                                child: Container(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 20,
+                                          width: 30,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 200, 255, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst0.tmin.toString()+"°c"),
+                                          ),
+                                        ),
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 90,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(255, 0, 0, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10.0),
+                                                  topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst0.tmax.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 20,)]),
+
+                                      Column(children: <Widget>[
+                                        Container(
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 200, 255, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst1.tmin.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 90,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(255, 0, 0, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst1.tmax.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 20)]),
+
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 30,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 200, 255, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst2.tmin.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 90,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(255, 0, 0, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst2.tmax.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 20,)]),
+
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 60,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 200, 255, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst3.tmin.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[
+                                        Container(
+                                          height: 120,
+                                          width: 35,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(255, 0, 0, 0.5),
+                                              //new Color.fromRGBO(255, 0, 0, 0.0),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                                  bottomLeft: Radius.circular(5.0),
+                                                  bottomRight: Radius.circular(5.0)
+                                              )
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(fcst3.tmax.toString()+"°c"),
+                                          ),
+                                        )
+                                      ]),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -1111,7 +1317,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             Text("🚩",
                                                 style: TextStyle(fontSize: 15)),
                                             Text(
-                                                " " + cond.windGust.toString() +
+                                                " " + cond.windSpeed.toString() +
                                                     ' km/h', style: TextStyle(
                                                 fontWeight: FontWeight.bold)),
                                           ],
@@ -1129,7 +1335,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 .wind, size: 15,
                                                 color: Colors.lightGreen),
                                             Text('  ' +
-                                                cond.windSpeed.toString() + ' km/h',
+                                                cond.windGust.toString() + ' km/h',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight
                                                         .bold))
@@ -1187,21 +1393,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         bottomRight: Radius.circular(10.0))
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Column(
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .start,
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Row(
                                             children: <Widget>[
-                                              Text(
-                                                  "🌅 " + ci.sunrise.toString(),
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .bold)), //windDir10m
+                                              Text("🌅 " + ci.sunrise.toString(), style: TextStyle(fontWeight: FontWeight.bold)), //windDir10m
                                             ],
                                           ),
                                           Container(
@@ -1266,6 +1465,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         100.0))
                                             ),
                                             child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
                                               children: <Widget>[
                                                 Container(
                                                   height: 100,
