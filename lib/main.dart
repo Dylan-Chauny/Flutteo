@@ -969,10 +969,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                         bottomRight: Radius.circular(10.0))
                                 ),
                                 child: Container(
+                                  width: 400,
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Column(children: <Widget>[Container(width: 5,)]),
+                                      Column(children: <Widget>[Container(width: 2,)]),
                                       Column(children: <Widget>[
                                         Container(
                                           height: 20,
@@ -1392,101 +1393,104 @@ class _MyHomePageState extends State<MyHomePage> {
                                         bottomLeft: Radius.circular(10.0),
                                         bottomRight: Radius.circular(10.0))
                                 ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Text("🌅 " + ci.sunrise.toString(), style: TextStyle(fontWeight: FontWeight.bold)), //windDir10m
-                                            ],
-                                          ),
-                                          Container(
-                                              height: 5, child: Text(' ')),
-                                          Text("(Heure du levé)",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w200,
-                                                  fontSize: 10)),
-                                          Container(
-                                              height: 10, child: Text(' ')),
-                                          Row(
-                                            children: <Widget>[
-                                              Text("🌇 " + ci.sunset.toString(),
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .bold)),
-                                            ],
-                                          ),
-                                          Container(
-                                              height: 5, child: Text(' ')),
-                                          Text("(Heure du couché)",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w200,
-                                                  fontSize: 10)),
-                                          Container(
-                                              height: 10, child: Text(' ')),
-                                          Row(
-                                            children: <Widget>[
-                                              Text("⌛ " + diff,
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight
-                                                          .bold)),
-                                            ],
-                                          ),
-                                          Container(
-                                              height: 5, child: Text(' ')),
-                                          Text("(Temps restant)",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w200,
-                                                  fontSize: 10)),
-                                        ]
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                      height: 100.0,
-                                      width: 0.5,
-                                      color: Colors.white30,
-                                    ),
-                                    Column(
+                                child: Container(
+                                  width: 400,
+                                    child: Row(
                                       children: <Widget>[
-                                        Container(
-                                            width: 240,
-                                            height: 100,
-                                            decoration: new BoxDecoration(
-                                                color: Color.fromRGBO(
-                                                    255, 200, 0, 0.1),
-                                                //new Color.fromRGBO(255, 0, 0, 0.0),,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(
-                                                        100.0),
-                                                    topRight: Radius.circular(
-                                                        100.0))
-                                            ),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: 100,
-                                                  width: 120,
-                                                  decoration: new BoxDecoration(
-                                                      color: Color.fromRGBO(
-                                                          255, 200, 0, 0.6),
-                                                      borderRadius: BorderRadius
-                                                          .only(
-                                                          topLeft: Radius
-                                                              .circular(100.0),
-                                                          topRight: Radius
-                                                              .circular(0.0))
-                                                  ),
-                                                ),
-                                              ],
-                                            )
+                                        Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Text("🌅 " + ci.sunrise.toString(), style: TextStyle(fontWeight: FontWeight.bold)), //windDir10m
+                                                ],
+                                              ),
+                                              Container(
+                                                  height: 5, child: Text(' ')),
+                                              Text("(Heure du levé)",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 10)),
+                                              Container(
+                                                  height: 10, child: Text(' ')),
+                                              Row(
+                                                children: <Widget>[
+                                                  Text("🌇 " + ci.sunset.toString(),
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight
+                                                              .bold)),
+                                                ],
+                                              ),
+                                              Container(
+                                                  height: 5, child: Text(' ')),
+                                              Text("(Heure du couché)",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 10)),
+                                              Container(
+                                                  height: 10, child: Text(' ')),
+                                              Row(
+                                                children: <Widget>[
+                                                  Text("⌛ " + diff,
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight
+                                                              .bold)),
+                                                ],
+                                              ),
+                                              Container(
+                                                  height: 5, child: Text(' ')),
+                                              Text("(Temps restant)",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w200,
+                                                      fontSize: 10)),
+                                            ]
                                         ),
+                                        Container(
+                                          margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                          height: 100.0,
+                                          width: 0.5,
+                                          color: Colors.white30,
+                                        ),
+                                        Column(
+                                          children: <Widget>[
+                                            Container(
+                                                width: 240,
+                                                height: 100,
+                                                decoration: new BoxDecoration(
+                                                    color: Color.fromRGBO(
+                                                        255, 200, 0, 0.1),
+                                                    //new Color.fromRGBO(255, 0, 0, 0.0),,
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(
+                                                            100.0),
+                                                        topRight: Radius.circular(
+                                                            100.0))
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      height: 100,
+                                                      width: 120,
+                                                      decoration: new BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              255, 200, 0, 0.6),
+                                                          borderRadius: BorderRadius
+                                                              .only(
+                                                              topLeft: Radius
+                                                                  .circular(100.0),
+                                                              topRight: Radius
+                                                                  .circular(0.0))
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
-                                  ],
                                 ),
                               ),
                             ],
