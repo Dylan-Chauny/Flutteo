@@ -449,7 +449,7 @@ class _MyHomePageState extends State<MyHomePage> {
           margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
           padding: EdgeInsets.fromLTRB(0, 10, 5, 10),
           decoration: new BoxDecoration(
-              color: Color.fromRGBO(0, 0, 0, 0.1),
+              color: Color.fromRGBO(0, 0, 0, 0.20),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
@@ -534,20 +534,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    height: 180,
-                    width: 0.25,
-                    color: Colors.white30,
-                  )
-                ],
-              ),
-              Column(
-                children: <Widget>[
                   Row (
                     children: <Widget>[
                       Container(
                         decoration: new BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          color: Color.fromRGBO(0, 0, 0, 0.35),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(25.0),
                             topRight: Radius.circular(25.0),
@@ -570,7 +561,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Container(width: 10, child: Text('')),
                       Container(
                         decoration: new BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          color: Color.fromRGBO(0, 0, 0, 0.35),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
                             topRight: Radius.circular(30.0),
@@ -597,7 +588,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Container(
                         decoration: new BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          color: Color.fromRGBO(0, 0, 0, 0.35),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
                             topRight: Radius.circular(30.0),
@@ -623,7 +614,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Container(width: 10, child: Text('')),
                       Container(
                         decoration: new BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          color: Color.fromRGBO(0, 0, 0, 0.35),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
                             topRight: Radius.circular(30.0),
@@ -742,7 +733,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                       height: 130,
                       decoration: new BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          color: Color.fromRGBO(0, 0, 0, 0.15),
                           //new Color.fromRGBO(255, 0, 0, 0.0),
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10.0),
@@ -769,7 +760,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                           padding: EdgeInsets.all(10),
                           decoration: new BoxDecoration(
-                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              color: Color.fromRGBO(0, 0, 0, 0.15),
                               //new Color.fromRGBO(255, 0, 0, 0.0),
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10.0),
@@ -1221,7 +1212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 padding: EdgeInsets.all(10),
                                 decoration: new BoxDecoration(
-                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    color: Color.fromRGBO(0, 0, 0, 0.15),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10.0),
@@ -1315,7 +1306,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 padding: EdgeInsets.all(10),
                                 decoration: new BoxDecoration(
-                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    color: Color.fromRGBO(0, 0, 0, 0.15),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10.0),
@@ -1445,7 +1436,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 padding: EdgeInsets.all(10),
                                 decoration: new BoxDecoration(
-                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    color: Color.fromRGBO(0, 0, 0, 0.15),
                                     //new Color.fromRGBO(255, 0, 0, 0.0),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10.0),
