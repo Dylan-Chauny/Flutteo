@@ -31,8 +31,6 @@ var hourConcerned;
 var jsonData;
 var precipitationIcon;
 
-var data = [0.0, 5.0, 1.5, 2.0, 8.5];
-//List<double> data = new List();
 
 void main() => runApp(MyApp());
 
@@ -71,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
   var loading = false;
 
   Future _loadJsonAsset() async {
-    print("Debut requête");
     return await(http.get(
         "https://www.prevision-meteo.ch/services/json/limoges"));
   }
@@ -79,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void loadJson() async {
     try {
       var data = await _loadJsonAsset();
-      print("Fin requête");
       jsonData = await json.decode(data.body);
 
       //Erreur ici si heure = 01H00 au lieu de 1H00
@@ -102,10 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       var isSnow = currentHourlyData.ISSNOW;
 
-      precipitationIcon =
-      isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text(
-          "🌧", style: TextStyle(fontSize: 30));
-      print("Valeur récupérées");
+      precipitationIcon = isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text("🌧", style: TextStyle(fontSize: 30));
 
       var hourSplit = ci.sunset.toString().split(":");
       var date1 = new TimeOfDay.now();
@@ -174,31 +167,39 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/")),
+            title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
             elevation: 0.0,
-            backgroundColor: Colors.transparent,
-          ),
-          body: Center(
-            child: FlatButton(
-              child: Container(
-                /*
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
-                    fit: BoxFit.cover,
-                    ),
-                ),
-                */
-              child: ListView(
-                  // This next line does the trick.
-                  children: containers_hour(0),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            flexibleSpace: Image(
+              image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+              fit: BoxFit.cover,
+            ),
+            iconTheme: new IconThemeData(
+              color: Colors.lightBlueAccent,
+              opacity: 1.0,
             ),
           ),
+          body: Stack(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                    fit: BoxFit.cover,
+                  ) ,
+                ),
+                child: FlatButton(
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      // This next line does the trick.
+                      children: containers_hour(0),
+                    ),
+                    onPressed:() {
+                      Navigator.pop(context);
+                    }
+                ),
+              ),
+            ],
+          )
         );
       },
     ));
@@ -208,32 +209,40 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context, MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/")),
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-          ),
-          body: Center(
-            child: FlatButton(
-              child: Container(
-                /*
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
-                    fit: BoxFit.cover,
+            appBar: AppBar(
+              title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              elevation: 0.0,
+              flexibleSpace: Image(
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                fit: BoxFit.cover,
+              ),
+              iconTheme: new IconThemeData(
+                color: Colors.lightBlueAccent,
+                opacity: 1.0,
+              ),
+            ),
+            body: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                      fit: BoxFit.cover,
+                    ) ,
+                  ),
+                  child: FlatButton(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        // This next line does the trick.
+                        children: containers_hour(1),
+                      ),
+                      onPressed:() {
+                        Navigator.pop(context);
+                      }
                   ),
                 ),
-                 */
-                child: ListView(
-                  // This next line does the trick.
-                  children: containers_hour(1),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
+              ],
+            )
         );
       },
     ));
@@ -243,32 +252,40 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context, MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Données pour le '+fcst2.dayLong.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/")),
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-          ),
-          body: Center(
-            child: FlatButton(
-              child: Container(
-                /*
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
-                    fit: BoxFit.cover,
+            appBar: AppBar(
+              title: Text('Données pour le '+fcst2.dayShort.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              elevation: 0.0,
+              flexibleSpace: Image(
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                fit: BoxFit.cover,
+              ),
+              iconTheme: new IconThemeData(
+                color: Colors.lightBlueAccent,
+                opacity: 1.0,
+              ),
+            ),
+            body: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                      fit: BoxFit.cover,
+                    ) ,
+                  ),
+                  child: FlatButton(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        // This next line does the trick.
+                        children: containers_hour(2),
+                      ),
+                      onPressed:() {
+                        Navigator.pop(context);
+                      }
                   ),
                 ),
-                */
-                child: ListView(
-                  // This next line does the trick.
-                  children: containers_hour(2),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
+              ],
+            )
         );
       },
     ));
@@ -278,32 +295,40 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context, MaterialPageRoute<void>(
       builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Données pour le '+fcst3.dayLong.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/")),
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-          ),
-          body: Center(
-            child: FlatButton(
-              child: Container(
-                /*
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
-                    fit: BoxFit.cover,
+            appBar: AppBar(
+              title: Text('Données pour le '+fcst3.dayShort.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              elevation: 0.0,
+              flexibleSpace: Image(
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
+                fit: BoxFit.cover,
+              ),
+              iconTheme: new IconThemeData(
+                color: Colors.lightBlueAccent,
+                opacity: 1.0,
+              ),
+            ),
+            body: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/662867597108183054/2Q.png"),
+                      fit: BoxFit.cover,
+                    ) ,
+                  ),
+                  child: FlatButton(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        // This next line does the trick.
+                        children: containers_hour(3),
+                      ),
+                      onPressed:() {
+                        Navigator.pop(context);
+                      }
                   ),
                 ),
-               */
-                child: ListView(
-                  // This next line does the trick.
-                  children: containers_hour(3),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
+              ],
+            )
         );
       },
     ));
@@ -403,6 +428,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> containers_hour(day) {
     List<Widget> l = new List();
 
+    l.add(Container(margin: EdgeInsets.fromLTRB(0, 10, 0, 0)),);
+
     for (int i = 0; i < 24; i++) {
       var hourStart = i.toString() + "H00";
       var displayHourStart = hourStart.toString().replaceFirst("H", ":");
@@ -441,7 +468,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Container(
                               alignment: Alignment.bottomLeft,
-                              child: Text(hourlyData.CONDITION.toString(), style: TextStyle(fontWeight: FontWeight.w300))
+                              child: Text(hourlyData.CONDITION.toString(), style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white))
                             ),
                           ],
                         ),
@@ -458,8 +485,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         alignment: Alignment.bottomLeft,
                         child: Row(
                           children: <Widget>[
-                            Text(hourlyData.TMP2m.toString()+"°", style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400)),
-                            Text("C", style: TextStyle(fontSize: 25))
+                            Text(hourlyData.TMP2m.toString()+"°", style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400, color: Colors.amber)),
+                            Text("C", style: TextStyle(fontSize: 25, color: Colors.amber))
                           ],
                         ),
                       )
@@ -471,7 +498,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.bottomLeft,
                     child: Row (
                       children: <Widget>[
-                        Text("Ressentie: "+hourlyData.WNDCHILL2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200)),
+                        Text("Ressentie: "+hourlyData.WNDCHILL2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white)),
                       ],
                     ),
                   ),
@@ -482,7 +509,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.bottomLeft,
                     child: Row(
                       children: <Widget>[
-                        Text("Point de rosée: "+hourlyData.DPT2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200),)
+                        Text("Point de rosée: "+hourlyData.DPT2m.toString()+"°C", style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white),)
                       ],
                     )
                   ),
@@ -493,7 +520,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.bottomLeft,
                     child: Row(
                       children: <Widget>[
-                        Text(displayHourStart.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.blueAccent))
+                        Text(displayHourStart.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.lightBlueAccent))
                       ],
                     )
                   ),
@@ -526,11 +553,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column (
                           children: <Widget>[
                             Container(height: 8),
-                            Text('Précipitation', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                            Text('Précipitation', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12, color: Colors.white)),
                             Container(height: 5),
                             precipitationIcon,
                             Container(height: 5),
-                            Text(hourlyData.APCPsfc.toString()+"mm", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
+                            Text(hourlyData.APCPsfc.toString()+"mm", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)),
                           ],
                         ),
                       ),
@@ -549,11 +576,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column (
                           children: <Widget>[
                             Container(height: 8),
-                            Text('Humidité', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                            Text('Humidité', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12, color: Colors.white)),
                             Container(height: 5),
                             Text("☔", style: TextStyle(fontSize: 30)),
                             Container(height: 5),
-                            Text(hourlyData.RH2m.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)), //Humidité
+                            Text(hourlyData.RH2m.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)), //Humidité
                           ],
                         ),
                       ),
@@ -576,14 +603,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column (
                             children: <Widget>[
                               Container(height: 8),
-                              Text('Vitesse vent', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                              Text('Vitesse vent', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12, color: Colors.white)),
                               Container(height: 5),
                               Icon(FontAwesomeIcons
                                   .wind, size: 30,
                                   color: Colors.lightGreen),
                               //Text("🚩", style: TextStyle(fontSize: 30)),
                               Container(height: 5),
-                              Text(hourlyData.WNDSPD10m.toString()+" km/h", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)),
+                              Text(hourlyData.WNDSPD10m.toString()+" km/h", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)),
                             ],
                           ),
                       ),
@@ -602,11 +629,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column (
                             children: <Widget>[ //
                               Container(height: 8),
-                              Text('Orage', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                              Text('Orage', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12, color: Colors.white)),
                               Container(height: 5),
                               Text("🌩", style: TextStyle(fontSize: 30)),
                               Container(height: 5),
-                              Text(hourlyData.KINDEX.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12)), //Orage
+                              Text(hourlyData.KINDEX.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)), //Orage
                             ],
                           ),
                       ),
@@ -627,7 +654,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget build(BuildContext context) {
       return Scaffold(
         body: !loading ? Container(
-          height: 1000,
+          height: 5000,
+          width: 5000,
           color: Colors.white,
           child: Image.network(
               'https://cdn.discordapp.com/attachments/418499901215735808/663047823813640193/Logo.png'),
@@ -670,7 +698,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Row(children: <Widget>[
                               Text(cond.tmp.toString() + '°', style: TextStyle(
                                   fontSize: 100.0,
-                                  fontWeight: FontWeight.w300)),
+                                  fontWeight: FontWeight.w300,
+                              )),
                               Text('C', style: TextStyle(fontSize: 30.0))
                             ],),
                             Row(children: <Widget>[
@@ -945,207 +974,202 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white70), onPressed: popup3)
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(height: 20, child: Text('')),
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              //temp * 10 + 20,
-                              Text('🌡 EVOLUTION DES TEMPERATURES', style: TextStyle(
-                                  fontWeight: FontWeight.w500)),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                padding: EdgeInsets.all(10),
-                                decoration: new BoxDecoration(
-                                    color: Color.fromRGBO(0, 0, 0, 0.1),
-                                    //new Color.fromRGBO(255, 0, 0, 0.0),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10.0),
-                                        topRight: Radius.circular(10.0),
-                                        bottomLeft: Radius.circular(10.0),
-                                        bottomRight: Radius.circular(10.0))
-                                ),
-                                child: Container(
-                                  width: 400,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Column(children: <Widget>[Container(width: 2,)]),
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 20,
-                                          width: 30,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(0, 200, 255, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst0.tmin.toString()+"°c"),
-                                          ),
-                                        ),
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 5,)]),
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 90,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(255, 0, 0, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(10.0),
-                                                  topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst0.tmax.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 20,)]),
+                              Container(height: 20),
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                    padding: EdgeInsets.all(10),
+                                    decoration: new BoxDecoration(
+                                        color: Color.fromRGBO(0, 0, 0, 0.1),
+                                        //new Color.fromRGBO(255, 0, 0, 0.0),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10.0),
+                                            topRight: Radius.circular(10.0),
+                                            bottomLeft: Radius.circular(10.0),
+                                            bottomRight: Radius.circular(10.0))
+                                    ),
+                                    child: Container(
+                                      width: 340,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Column(children: <Widget>[Container(width: 2,)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 20,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst0.tmin.toString()+"°c"),
+                                              ),
+                                            ),
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 5)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 90,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst0.tmax.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 25)]),
 
-                                      Column(children: <Widget>[
-                                        Container(
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(0, 200, 255, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst1.tmin.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 5,)]),
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 90,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(255, 0, 0, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst1.tmax.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 20)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst1.tmin.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 5)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 80,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst1.tmax.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 25)]),
 
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 30,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(0, 200, 255, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst2.tmin.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 5,)]),
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 90,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(255, 0, 0, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst2.tmax.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 20,)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst2.tmin.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 5)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 90,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst2.tmax.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 25)]),
 
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 60,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(0, 200, 255, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst3.tmin.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                      Column(children: <Widget>[Container(width: 5,)]),
-                                      Column(children: <Widget>[
-                                        Container(
-                                          height: 120,
-                                          width: 35,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(255, 0, 0, 0.5),
-                                              //new Color.fromRGBO(255, 0, 0, 0.0),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
-                                                  bottomLeft: Radius.circular(5.0),
-                                                  bottomRight: Radius.circular(5.0)
-                                              )
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(fcst3.tmax.toString()+"°c"),
-                                          ),
-                                        )
-                                      ]),
-                                    ],
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 60,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(0, 200, 255, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst3.tmin.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                          Column(children: <Widget>[Container(width: 5)]),
+                                          Column(children: <Widget>[
+                                            Container(
+                                              height: 120,
+                                              width: 30,
+                                              decoration: new BoxDecoration(
+                                                  color: Color.fromRGBO(255, 0, 0, 0.5),
+                                                  //new Color.fromRGBO(255, 0, 0, 0.0),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(5.0),
+                                                      bottomRight: Radius.circular(5.0)
+                                                  )
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(fcst3.tmax.toString()+"°c"),
+                                              ),
+                                            )
+                                          ]),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
+                              Container(height: 5)
                             ],
                           ),
                         ),
@@ -1277,7 +1301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Row(
                                           children: <Widget>[
                                             Icon(FontAwesomeIcons.compass,
-                                                size: 17, color: Colors.yellow),
+                                                size: 17, color: Colors.amber),
                                             Text("  " + cond.windDir.toString(),
                                                 style: TextStyle(
                                                     fontWeight: FontWeight
@@ -1459,7 +1483,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 height: 100,
                                                 decoration: new BoxDecoration(
                                                     color: Color.fromRGBO(
-                                                        255, 200, 0, 0.1),
+                                                        255, 191, 0, 0.1),
                                                     //new Color.fromRGBO(255, 0, 0, 0.0),,
                                                     borderRadius: BorderRadius.only(
                                                         topLeft: Radius.circular(
@@ -1475,7 +1499,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       width: 120,
                                                       decoration: new BoxDecoration(
                                                           color: Color.fromRGBO(
-                                                              255, 200, 0, 0.6),
+                                                              255, 191, 0, 0.6),
                                                           borderRadius: BorderRadius
                                                               .only(
                                                               topLeft: Radius
