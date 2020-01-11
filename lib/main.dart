@@ -132,6 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
             diff = diff.toString().replaceFirst('0', "");
         }
 
+      if(checkHoure[1].toString().length < 2)
+          diff = diff.toString().replaceFirst(':', ':0');
+
       Timer(Duration(seconds: 2), () {
         setState(() {
           loading = true;
@@ -991,7 +994,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         fontWeight: FontWeight.w200),
                                         textAlign: TextAlign.center),
                               ),
-                              Row(
+                              Column(
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -1006,8 +1009,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                             bottomRight: Radius.circular(10.0))
                                     ),
                                     child: Container(
-                                      width: 340,
+                                      width: 5000,
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[
                                           Column(children: <Widget>[Container(width: 5,)]),
@@ -1432,7 +1436,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Container(height: 20, child: Text('')),
                         Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -1450,77 +1453,74 @@ class _MyHomePageState extends State<MyHomePage> {
                                         bottomLeft: Radius.circular(10.0),
                                         bottomRight: Radius.circular(10.0))
                                 ),
-                                child: Container(
-                                  width: 400,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceAround,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Text("Sunrise"),
-                                          Text("(levé du soleil)", style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight
-                                                  .w200)),
-                                          Container(height: 5, child: Text(' ')),
-                                          Text("🌅️",
-                                              style: TextStyle(fontSize: 30)),
-                                          Container(height: 10, child: Text(' ')),
-                                          Text(ci.sunrise.toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight
-                                                      .w300)),
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 100.0,
-                                        width: 0.5,
-                                        color: Colors.white30,
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text("Sunset"),
-                                          Text("(couché du soleil)", style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight
-                                                  .w200)),
-                                          Container(height: 5, child: Text(' ')),
-                                          Text("🌇️",
-                                              style: TextStyle(fontSize: 30)),
-                                          Container(height: 10, child: Text(' ')),
-                                          Text(ci.sunset.toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight
-                                                      .w300)),
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 100.0,
-                                        width: 0.5,
-                                        color: Colors.white30,
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text("Temps restant"),
-                                          Container(height: 5, child: Text(' ')),
-                                          Text("⌛️",
-                                              style: TextStyle(fontSize: 30)),
-                                          Container(height: 10, child: Text(' ')),
-                                          Text(diff,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight
-                                                      .w300)),
-                                          Text("(de soleil pour aujourd'hui)", style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight
-                                                  .w200))
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Sunrise"),
+                                        Text("(levé du soleil)", style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight
+                                                .w200)),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("🌅️",
+                                            style: TextStyle(fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(ci.sunrise.toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight
+                                                    .w300)),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Sunset"),
+                                        Text("(couché du soleil)", style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight
+                                                .w200)),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("🌇️",
+                                            style: TextStyle(fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(ci.sunset.toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight
+                                                    .w300)),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 100.0,
+                                      width: 0.5,
+                                      color: Colors.white30,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text("Temps restant"),
+                                        Container(height: 5, child: Text(' ')),
+                                        Text("⌛️",
+                                            style: TextStyle(fontSize: 30)),
+                                        Container(height: 10, child: Text(' ')),
+                                        Text(diff,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight
+                                                    .w300)),
+                                        Text("(de soleil pour aujourd'hui)", style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight
+                                                .w200))
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
