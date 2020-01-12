@@ -100,29 +100,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
       precipitationIcon = isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text("🌧", style: TextStyle(fontSize: 30));
 
-      var hourSplit = ci.sunset.toString().split(":");
-      var date1 = new TimeOfDay.now();
-      var date2 = new TimeOfDay(
-          hour: int.parse(hourSplit[0]), minute: int.parse(hourSplit[1]));
+      var sunsetSplit = ci.sunset.toString().split(":");
+      var sunriseSplit = ci.sunrise.toString().split(":");
+      var timeNow = new TimeOfDay.now();
+      var sunriseTime = new TimeOfDay(hour: int.parse(sunriseSplit[0]), minute: int.parse(sunriseSplit[1]));
+      var sunsetTime = new TimeOfDay(hour: int.parse(sunsetSplit[0]), minute: int.parse(sunsetSplit[1]));
 
       var now = new DateTime.now();
       var dateTime1 = new DateTime(
-          now.year, now.month, now.day, date1.hour, date1.minute);
+          now.year, now.month, now.day, timeNow.hour, timeNow.minute);
       var dateTime2 = new DateTime(
-          now.year, now.month, now.day, date2.hour, date2.minute);
+          now.year, now.month, now.day, sunsetTime.hour, sunsetTime.minute);
+      var sunriseDateTime = new DateTime(
+          now.year, now.month, now.day, sunriseTime.hour, sunriseTime.minute);
       diff = dateTime2.difference(dateTime1).toString().substring(0, 4);
+
+      var diffToNowToSunrise = dateTime1.difference(sunriseDateTime).toString().substring(0,1);
 
       var checkHoure = diff.split(':');
       diffHour = int.parse(checkHoure[0]);
       var diffMin = int.parse(checkHoure[1]);
 
-      //MODIF ICI
       var checkNegativeValue = diff.toString().substring(0, 1);
 
       if (diffHour < 10)
         diff = "0" + diff.toString();
 
-      if (checkNegativeValue == "-")
+      if (checkNegativeValue == "-" || diffToNowToSunrise == "-")
         diff = "Aucune minutes";
 
       if(diffHour == 0)
