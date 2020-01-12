@@ -144,6 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
           loading = true;
         });
       });
+
     }
     catch (e) {
       print(e);
@@ -725,7 +726,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Row(
                                 children: <Widget>[
                                   Text('  '),
-                                  Text('On a la sensation de : ',
+                                  Text('ressentie comme : ',
                                       style: TextStyle(fontSize: 15,
                                           fontWeight: FontWeight.w300)),
                                   Text(currentHourlyData.WNDCHILL2m.toString() +
