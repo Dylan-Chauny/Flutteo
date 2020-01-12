@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutteo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         primaryColor: Colors.white,
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
             size: 50.0
         ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutteo'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
         diff = "0" + diff.toString();
 
       if (checkNegativeValue == "-")
-        diff = "00:00";
+        diff = "Aucune minutes";
 
       if(diffHour == 0)
         {
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
             diff = diff.toString().replaceFirst('0', "");
         }
 
-      if(checkHoure[1].toString().length < 2)
+      if(checkHoure[1].toString().length < 2 && checkNegativeValue != "-")
           diff = diff.toString().replaceFirst(':', ':0');
 
       Timer(Duration(seconds: 2), () {
@@ -146,6 +146,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  giveMeHeight(temp)
+  {
+    var height = 20;
+
+    if(temp.toString().substring(0,1) != "-")
+      height = (temp*10) + 30;
+
+    return height.toDouble();
+  }
 
   @override
   void initState() {
@@ -169,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+            title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.amber)),
             elevation: 0.0,
             flexibleSpace: Image(
               //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
@@ -177,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
               fit: BoxFit.cover,
             ),
             iconTheme: new IconThemeData(
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
               opacity: 1.0,
             ),
           ),
@@ -213,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              title: Text('Données pour le '+fcst1.dayShort.toString()+ ' ' + fcst1.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.amber)),
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
@@ -221,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
                 opacity: 1.0,
               ),
             ),
@@ -257,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Données pour le '+fcst2.dayShort.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              title: Text('Données pour le '+fcst2.dayShort.toString()+ ' ' + fcst2.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.amber)),
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
@@ -265,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
                 opacity: 1.0,
               ),
             ),
@@ -301,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-              title: Text('Données pour le '+fcst3.dayShort.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.lightBlueAccent)),
+              title: Text('Données pour le '+fcst3.dayShort.toString()+ ' ' + fcst3.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.amber)),
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
@@ -309,7 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
                 opacity: 1.0,
               ),
             ),
@@ -393,7 +402,7 @@ class _MyHomePageState extends State<MyHomePage> {
         FontAwesomeIcons.thermometerEmpty, size: 17,
         color: Colors.lightBlueAccent,) :
       temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17,
-          color: Colors.yellowAccent) :
+          color: Colors.amberAccent) :
       temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17,
           color: Colors.orangeAccent) :
       Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17,
@@ -718,7 +727,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Text(currentHourlyData.WNDCHILL2m.toString() +
                                       '°', style: TextStyle(fontSize: 15,
                                       fontWeight: FontWeight.w300)),
-
                                 ],
                               ),
                             ],)
@@ -729,6 +737,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Container(height: 20, child: Text('')),
+                  Container(
+                    height: 20,
+                    width: 120,
+                    decoration: new BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.15),
+                        //new Color.fromRGBO(255, 0, 0, 0.0),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                        )
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Prochaines 24h", style: TextStyle(color: Colors.amberAccent))
+                      ],
+                    ),
+                  ),
                   Container(
                       margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                       height: 130,
@@ -979,7 +1005,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               Container(height: 30),
                               Container(
-                                child: Text("Comparatif des températures de " +fcst0.dayLong.toString()+ " à " + fcst3.dayLong.toString(),
+                                child: Text("Comparatif des températures",
                                     style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w200),
@@ -989,15 +1015,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                                     decoration: new BoxDecoration(
                                         color: Color.fromRGBO(0, 0, 0, 0.1),
                                         //new Color.fromRGBO(255, 0, 0, 0.0),
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(10.0),
                                             topRight: Radius.circular(10.0),
-                                            bottomLeft: Radius.circular(10.0),
-                                            bottomRight: Radius.circular(10.0))
+                                        )
                                     ),
                                     child: Container(
                                       width: 5000,
@@ -1005,17 +1030,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[
-                                          Column(children: <Widget>[Container(width: 5,)]),
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 20,
+                                              height: giveMeHeight(fcst0.tmin),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1031,14 +1055,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 90,
+                                              height: giveMeHeight(fcst0.tmax),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1056,13 +1080,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                           Column(children: <Widget>[
                                             Container(
+                                              height: giveMeHeight(fcst1.tmin),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1078,14 +1103,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 80,
+                                              height: giveMeHeight(fcst1.tmax),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1102,14 +1127,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 30,
+                                              height: giveMeHeight(fcst2.tmin),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),bottomLeft: Radius.circular(5.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
                                               ),
@@ -1124,14 +1149,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 90,
+                                              height: giveMeHeight(fcst2.tmax),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1148,14 +1173,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 60,
+                                              height: giveMeHeight(fcst3.tmin),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(0, 200, 255, 0.40),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1171,14 +1196,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Column(children: <Widget>[Container(width: 5)]),
                                           Column(children: <Widget>[
                                             Container(
-                                              height: 120,
+                                              height: giveMeHeight(fcst3.tmax),
                                               width: 35,
                                               decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 0.35),
                                                   //new Color.fromRGBO(255, 0, 0, 0.0),
                                                   borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(10.0),
-                                                      topRight: Radius.circular(10.0),
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight: Radius.circular(5.0),
                                                       bottomLeft: Radius.circular(5.0),
                                                       bottomRight: Radius.circular(5.0)
                                                   )
@@ -1196,6 +1221,100 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                                    //new Color.fromRGBO(255, 0, 0, 0.0),
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(10.0),
+                                        bottomRight: Radius.circular(10.0))
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 0, 0, 0.30),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
+                                                  bottomLeft: Radius.circular(25.0),
+                                                  bottomRight: Radius.circular(25.0))
+                                          ),
+                                          alignment: Alignment.center,
+                                          width: 70,
+                                          height: 30,
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(fcst0.dayShort.toString()),
+                                        )
+                                      ],
+                                    ),
+                                    Container(width: 15),
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 0, 0, 0.30),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
+                                                  bottomLeft: Radius.circular(25.0),
+                                                  bottomRight: Radius.circular(25.0))
+                                          ),
+                                          alignment: Alignment.center,
+                                          width: 70,
+                                          height: 30,
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(fcst1.dayShort.toString()),
+                                        )
+                                      ],
+                                    ),
+                                    Container(width: 15),
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 0, 0, 0.30),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
+                                                  bottomLeft: Radius.circular(25.0),
+                                                  bottomRight: Radius.circular(25.0))
+                                          ),
+                                          alignment: Alignment.center,
+                                          width: 70,
+                                          height: 30,
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(fcst2.dayShort.toString()),
+                                        )
+                                      ],
+                                    ),
+                                    Container(width: 15),
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(0, 0, 0, 0.30),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
+                                                  bottomLeft: Radius.circular(25.0),
+                                                  bottomRight: Radius.circular(25.0))
+                                          ),
+                                          alignment: Alignment.center,
+                                          width: 70,
+                                          height: 30,
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(fcst3.dayShort.toString()),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                               Container(height: 5)
                             ],
