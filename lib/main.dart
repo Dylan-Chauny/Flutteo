@@ -78,8 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
       var data = await _loadJsonAsset();
       jsonData = await json.decode(data.body);
 
-      //Erreur ici si heure = 01H00 au lieu de 1H00
-
       cond = CurrentCondition.fromJson(jsonData['current_condition']);
       //ci = CityInfo.fromJson(jsonData['city_info']);
       ci = CityInfo.fromJson(jsonData['city_info']);
@@ -107,36 +105,41 @@ class _MyHomePageState extends State<MyHomePage> {
       var sunsetTime = new TimeOfDay(hour: int.parse(sunsetSplit[0]), minute: int.parse(sunsetSplit[1]));
 
       var now = new DateTime.now();
-      var dateTime1 = new DateTime(
+      var dateTimeNow = new DateTime(
           now.year, now.month, now.day, timeNow.hour, timeNow.minute);
-      var dateTime2 = new DateTime(
+      var dateTimeSunset = new DateTime(
           now.year, now.month, now.day, sunsetTime.hour, sunsetTime.minute);
       var sunriseDateTime = new DateTime(
           now.year, now.month, now.day, sunriseTime.hour, sunriseTime.minute);
-      diff = dateTime2.difference(dateTime1).toString().substring(0, 4);
+      diff = dateTimeSunset.difference(dateTimeNow).toString().substring(0, 4);
 
-      var diffToNowToSunrise = dateTime1.difference(sunriseDateTime).toString().substring(0,1);
+      var diffToNowToSunrise = dateTimeNow.difference(sunriseDateTime).toString().substring(0,1);
 
-      var checkHoure = diff.split(':');
-      diffHour = int.parse(checkHoure[0]);
-      var diffMin = int.parse(checkHoure[1]);
+      var checkHour = diff.split(':');
+      diffHour = int.parse(checkHour[0]);
+      var diffMin = int.parse(checkHour[1]);
 
       var checkNegativeValue = diff.toString().substring(0, 1);
 
+      // Display 08H00 into 8H00
       if (diffHour < 10)
         diff = "0" + diff.toString();
 
+      // Display no minutes
       if (checkNegativeValue == "-" || diffToNowToSunrise == "-")
         diff = "Aucune minutes";
 
+      // Case where only Minutes remains
       if(diffHour == 0)
         {
+          // Display in good format
           diff = diff.toString().replaceFirst("00:", "")+" min";
           if (diffMin < 10)
             diff = diff.toString().replaceFirst('0', "");
         }
 
-      if(checkHoure[1].toString().length < 2 && checkNegativeValue != "-")
+      // Display 08:02 into 08:2
+      if(checkHour[1].toString().length < 2 && checkNegativeValue != "-")
           diff = diff.toString().replaceFirst(':', ':0');
 
       Timer(Duration(seconds: 2), () {
@@ -168,6 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var min = current.minute.toString();
     var hour = current.hour.toString();
 
+    // Display in good format 18:34
     if (int.parse(min) < 10)
       min = "0" + min;
 
@@ -186,8 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Données pour le '+fcst0.dayShort.toString()+ ' ' + fcst0.date.toString().replaceAll(".", "/"), style: TextStyle(color: Colors.amber)),
             elevation: 0.0,
             flexibleSpace: Image(
-              //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
-              image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
+              //https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png
+              image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
               fit: BoxFit.cover,
             ),
             iconTheme: new IconThemeData(
@@ -231,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -275,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -319,7 +323,8 @@ class _MyHomePageState extends State<MyHomePage> {
               elevation: 0.0,
               flexibleSpace: Image(
                 //https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png
-                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png"),
+                //https://cdn.discordapp.com/attachments/418499901215735808/665582664866070634/2Q3.png
+                image: NetworkImage("https://cdn.discordapp.com/attachments/418499901215735808/665579632862691348/2Q2.png"),
                 fit: BoxFit.cover,
               ),
               iconTheme: new IconThemeData(
@@ -358,7 +363,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> l = new List();
     var hourStart;
     var hour;
-    var indice = 0;
+    var index = 0;
 
     for (int i = 0; i < 24; i++) {
       var hourlyData;
@@ -384,14 +389,16 @@ class _MyHomePageState extends State<MyHomePage> {
       else {
         hour = (int.parse(hourStart) + i).toString() + ":00";
         if (int.parse(hourStart) + i > 24) {
-          indice += 1;
-          if (indice < 10) {
-            hour = "0" + indice.toString() + ":00";
-            hourForData = indice.toString() + "H00";
+          index += 1; // Continue la liste pour le jour suivant à 1H00 du matin
+
+          //Display format
+          if (index < 10) {
+            hour = "0" + index.toString() + ":00";
+            hourForData = index.toString() + "H00";
           }
           else {
-            hour = indice.toString() + ":00";
-            hourForData = indice.toString() + "H00";
+            hour = index.toString() + ":00";
+            hourForData = index.toString() + "H00";
           }
           hourlyData = hourly.fromJson(
               jsonData['fcst_day_1']['hourly_data'][hourForData.toString().replaceAll(":", "H")]);
@@ -402,17 +409,14 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
 
+      // Interactiv color on thermometer based on temperatures
       temperature = hourlyData.TMP2m;
-      var icon = temperature < 10 ? Icon(
-        FontAwesomeIcons.thermometerEmpty, size: 17,
-        color: Colors.lightBlueAccent,) :
-      temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17,
-          color: Colors.amberAccent) :
-      temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17,
-          color: Colors.orangeAccent) :
-      Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17,
-          color: Colors.redAccent);
+      var icon = temperature < 10 ? Icon(FontAwesomeIcons.thermometerEmpty, size: 17, color: Colors.lightBlueAccent,) :
+      temperature < 15 ? Icon(FontAwesomeIcons.thermometerQuarter, size: 17, color: Colors.amberAccent) :
+      temperature < 25 ? Icon(FontAwesomeIcons.thermometerHalf, size: 17, color: Colors.orangeAccent) :
+      Icon(FontAwesomeIcons.thermometerThreeQuarters, size: 17, color: Colors.redAccent);
 
+      // Add Each element for each houre on the listView
       l.add(Container(
         margin: EdgeInsets.fromLTRB(7, 0, 8, 0),
         width: 60.0,
@@ -456,6 +460,9 @@ class _MyHomePageState extends State<MyHomePage> {
       var hourlyData;
 
       hourlyData = hourly.fromJson(jsonData['fcst_day_'+day.toString()]['hourly_data'][hourStart]);
+
+      var isSnow = hourlyData.ISSNOW;
+      precipitationIcon = isSnow == 1 ? Text("🌨", style: TextStyle(fontSize: 30)) : Text("🌧", style: TextStyle(fontSize: 30));
 
       l.add(
         Container(
@@ -644,7 +651,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Container(height: 5),
                               Text("🌩", style: TextStyle(fontSize: 30)),
                               Container(height: 5),
-                              Text(hourlyData.KINDEX.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)), //Orage
+                              Text(hourlyData.KINDEX.toString()+"%", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12, color: Colors.white)),
                             ],
                           ),
                       ),
@@ -1485,8 +1492,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Container(height: 5, child: Text(' ')),
                                         Text("(Direction du vent)",
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: 10)),
+                                                fontWeight: FontWeight.w200, fontSize: 10)),
                                         Container(height: 10, child: Text(' ')),
 
                                         Row(
@@ -1495,15 +1501,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 style: TextStyle(fontSize: 15)),
                                             Text(
                                                 " " + cond.windSpeed.toString() +
-                                                    ' km/h', style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                                    ' km/h', style: TextStyle(fontWeight: FontWeight.bold)),
                                           ],
                                         ),
                                         Container(height: 5, child: Text(' ')),
                                         Text("(Vitesse du vent)",
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: 10)),
+                                                fontWeight: FontWeight.w200, fontSize: 10)),
                                         Container(height: 10, child: Text(' ')),
 
                                         Row(
@@ -1514,14 +1518,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                             Text('  ' +
                                                 cond.windGust.toString() + ' km/h',
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight
-                                                        .bold))
+                                                    fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                         Container(height: 5, child: Text(' ')),
                                         Text("(Vent en rafale)", style: TextStyle(
-                                            fontWeight: FontWeight.w200,
-                                            fontSize: 10)),
+                                            fontWeight: FontWeight.w200, fontSize: 10)),
                                         Container(height: 10, child: Text(' ')),
                                       ],
                                     ),
@@ -1538,9 +1540,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Text('(' + (cond.pressure * 1.013)
                                             .floor()
                                             .toString() + ' Bar)',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w200,
-                                                fontSize: 12))
+                                            style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12))
                                       ],
                                     )
                                   ],
@@ -1577,16 +1577,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Text("Sunrise"),
                                         Text("(levé du soleil)", style: TextStyle(
                                             fontSize: 10,
-                                            fontWeight: FontWeight
-                                                .w200)),
+                                            fontWeight: FontWeight.w200)),
                                         Container(height: 5, child: Text(' ')),
                                         Text("🌅️",
                                             style: TextStyle(fontSize: 30)),
                                         Container(height: 10, child: Text(' ')),
                                         Text(ci.sunrise.toString(),
                                             style: TextStyle(
-                                                fontWeight: FontWeight
-                                                    .w300)),
+                                                fontWeight: FontWeight.w300)),
                                       ],
                                     ),
                                     Container(
@@ -1607,8 +1605,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Container(height: 10, child: Text(' ')),
                                         Text(ci.sunset.toString(),
                                             style: TextStyle(
-                                                fontWeight: FontWeight
-                                                    .w300)),
+                                                fontWeight: FontWeight.w300)),
                                       ],
                                     ),
                                     Container(
@@ -1627,10 +1624,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight
                                                     .w300)),
-                                        Text("(de soleil pour aujourd'hui)", style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight
-                                                .w200))
+                                        Text("(de soleil pour aujourd'hui)", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w200))
                                       ],
                                     ),
                                   ],
@@ -1640,6 +1634,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         Container(height: 40, child: Text('')),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text("(Développé par Braud Nicolas - Chauny Dylan - Clément Fouret)",
+                                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 14.0),
+                                  textAlign: TextAlign.center
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(height: 20, child: Text('')),
                       ],
                     ),
                   ),
